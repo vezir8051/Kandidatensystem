@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { DemoBanner, Header, Footer, InseratBadge } from "@/components/ui";
+import { InseratErstellenButton } from "@/components/inserat-erstellen";
 import {
   getFirma,
   inserate,
@@ -29,9 +30,7 @@ export default function FirmaDashboard() {
               {firma.branche} · {firma.ort} · Ansprechperson: {firma.kontaktperson}
             </p>
           </div>
-          <button className="px-5 py-2.5 rounded-lg bg-brand-600 text-white font-medium hover:bg-brand-700 transition cursor-not-allowed opacity-90">
-            + Neues Inserat erstellen
-          </button>
+          <InseratErstellenButton />
         </div>
 
         <h2 className="text-lg font-semibold text-slate-900 mb-4">Ihre Inserate</h2>

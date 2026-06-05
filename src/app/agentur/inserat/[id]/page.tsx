@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { DemoBanner, Header, Footer, InseratBadge } from "@/components/ui";
+import { EinreichFormular } from "@/components/einreich-formular";
 import { getInserat, getFirma, inserate } from "@/lib/demo-data";
 
 export function generateStaticParams() {
@@ -51,90 +52,10 @@ export default async function KandidatEinreichen({
           den am besten passenden aus Ihrem Pool.
         </div>
 
-        {/* Formular (Demo, nicht funktional) */}
-        <form className="bg-white rounded-xl border border-slate-200 p-6 mt-6 space-y-5">
-          <h2 className="font-semibold text-slate-900">Kandidat einreichen</h2>
-
-          <div className="grid sm:grid-cols-2 gap-4">
-            <Field label="Vorname" placeholder="z.B. Andreas" />
-            <Field label="Nachname" placeholder="z.B. Huber" />
-          </div>
-
-          <div className="grid sm:grid-cols-2 gap-4">
-            <Field label="Beruf" placeholder={inserat.beruf} />
-            <Field label="Jahre Erfahrung" placeholder="z.B. 8" type="number" />
-          </div>
-
-          <Field label="Verfügbar ab" type="date" />
-
-          <div>
-            <label className="block text-sm font-medium text-slate-700 mb-1.5">
-              Qualifikationen
-            </label>
-            <input
-              className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500"
-              placeholder="z.B. EFZ Maler, Gerüstbau, Fahrausweis (mit Komma getrennt)"
-            />
-          </div>
-
-          <div>
-            <label className="block text-sm font-medium text-slate-700 mb-1.5">
-              Notiz für die Firma
-            </label>
-            <textarea
-              rows={3}
-              className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500"
-              placeholder="Kurze Beschreibung, warum dieser Kandidat passt."
-            />
-          </div>
-
-          <div>
-            <label className="block text-sm font-medium text-slate-700 mb-1.5">
-              Lebenslauf (PDF)
-            </label>
-            <div className="border-2 border-dashed border-slate-300 rounded-lg p-6 text-center text-sm text-slate-500">
-              📄 PDF hierher ziehen oder klicken zum Hochladen
-            </div>
-          </div>
-
-          <div className="flex items-center gap-2 text-sm text-slate-600">
-            <input type="checkbox" className="rounded" />
-            <span>
-              Der Kandidat hat sein Einverständnis zur Weitergabe seiner Daten gegeben (nDSG).
-            </span>
-          </div>
-
-          <button
-            type="button"
-            className="w-full px-5 py-3 rounded-lg bg-emerald-600 text-white font-medium hover:bg-emerald-700 transition cursor-not-allowed opacity-90"
-          >
-            Kandidat einreichen (Demo – nicht aktiv)
-          </button>
-        </form>
+        <EinreichFormular beruf={inserat.beruf} inseratTitel={inserat.titel} />
       </main>
 
       <Footer />
     </>
-  );
-}
-
-function Field({
-  label,
-  placeholder,
-  type = "text",
-}: {
-  label: string;
-  placeholder?: string;
-  type?: string;
-}) {
-  return (
-    <div>
-      <label className="block text-sm font-medium text-slate-700 mb-1.5">{label}</label>
-      <input
-        type={type}
-        placeholder={placeholder}
-        className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500"
-      />
-    </div>
   );
 }

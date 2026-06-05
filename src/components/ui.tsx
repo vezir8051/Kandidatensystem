@@ -14,8 +14,10 @@ export function DemoBanner() {
 // --- Header / Navigation ---
 export function Header({
   rolle,
+  name,
 }: {
-  rolle?: "firma" | "agentur";
+  rolle?: "firma" | "agentur" | "admin";
+  name?: string;
 }) {
   return (
     <header className="bg-white border-b border-slate-200 sticky top-0 z-10">
@@ -29,12 +31,17 @@ export function Header({
         <nav className="flex items-center gap-2 text-sm">
           {rolle === "firma" && (
             <span className="px-3 py-1 rounded-full bg-brand-50 text-brand-700 font-medium">
-              Angemeldet als Firma
+              {name ? `Firma: ${name}` : "Angemeldet als Firma"}
             </span>
           )}
           {rolle === "agentur" && (
             <span className="px-3 py-1 rounded-full bg-emerald-50 text-emerald-700 font-medium">
-              Angemeldet als Agentur
+              {name ? `Agentur: ${name}` : "Angemeldet als Agentur"}
+            </span>
+          )}
+          {rolle === "admin" && (
+            <span className="px-3 py-1 rounded-full bg-slate-800 text-white font-medium">
+              Admin-Bereich
             </span>
           )}
           {rolle && (
@@ -92,8 +99,21 @@ export function KandidatBadge({ status }: { status: KandidatStatus }) {
 // --- Footer ---
 export function Footer() {
   return (
-    <footer className="border-t border-slate-200 mt-16 py-8 text-center text-sm text-slate-500">
-      <p>TempMatch – Demo-Version · Businessplan-Prototyp · {new Date().getFullYear()}</p>
+    <footer className="border-t border-slate-200 mt-16 py-8 text-sm text-slate-500">
+      <div className="max-w-6xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-4">
+        <p>TempMatch – Demo-Version · Businessplan-Prototyp · {new Date().getFullYear()}</p>
+        <nav className="flex items-center gap-4">
+          <Link href="/datenschutz" className="hover:text-slate-700 transition">
+            Datenschutz
+          </Link>
+          <Link href="/impressum" className="hover:text-slate-700 transition">
+            Impressum
+          </Link>
+          <Link href="/agb" className="hover:text-slate-700 transition">
+            AGB
+          </Link>
+        </nav>
+      </div>
     </footer>
   );
 }
