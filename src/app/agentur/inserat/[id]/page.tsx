@@ -7,8 +7,13 @@ export function generateStaticParams() {
   return inserate.map((i) => ({ id: i.id }));
 }
 
-export default function KandidatEinreichen({ params }: { params: { id: string } }) {
-  const inserat = getInserat(params.id);
+export default async function KandidatEinreichen({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}) {
+  const { id } = await params;
+  const inserat = getInserat(id);
   if (!inserat) notFound();
   const firma = getFirma(inserat.firmaId);
 
