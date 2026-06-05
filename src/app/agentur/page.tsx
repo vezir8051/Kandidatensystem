@@ -61,7 +61,7 @@ export default function AgenturDashboard() {
             <select
               value={agenturId}
               onChange={(e) => setAgenturId(e.target.value)}
-              className="rounded-lg border border-slate-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500"
+              className="rounded-lg border border-slate-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand-500"
             >
               {agenturen.map((a) => (
                 <option key={a.id} value={a.id}>
@@ -95,7 +95,7 @@ export default function AgenturDashboard() {
             <select
               value={berufFilter}
               onChange={(e) => setBerufFilter(e.target.value)}
-              className="rounded-lg border border-slate-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500"
+              className="rounded-lg border border-slate-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand-500"
             >
               <option value="">Alle Berufe</option>
               {berufe.map((b) => (
@@ -110,7 +110,7 @@ export default function AgenturDashboard() {
             <select
               value={ortFilter}
               onChange={(e) => setOrtFilter(e.target.value)}
-              className="rounded-lg border border-slate-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500"
+              className="rounded-lg border border-slate-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand-500"
             >
               <option value="">Alle Orte</option>
               {orte.map((o) => (
@@ -184,7 +184,7 @@ export default function AgenturDashboard() {
                       ) : (
                         <Link
                           href={`/agentur/inserat/${inserat.id}`}
-                          className="inline-block px-4 py-2 rounded-lg bg-emerald-600 text-white text-sm font-medium hover:bg-emerald-700 transition"
+                          className="inline-block px-4 py-2 rounded-lg bg-brand-600 text-white text-sm font-medium hover:bg-brand-700 transition-colors"
                         >
                           Kandidat einreichen →
                         </Link>

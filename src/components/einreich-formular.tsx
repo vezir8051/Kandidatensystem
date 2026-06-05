@@ -53,7 +53,7 @@ export function EinreichFormular({
         </p>
         <Link
           href="/agentur"
-          className="inline-block mt-6 px-6 py-3 rounded-lg bg-emerald-600 text-white font-medium hover:bg-emerald-700 transition"
+          className="inline-block mt-6 px-6 py-3 rounded-lg bg-brand-600 text-white font-medium hover:bg-brand-700 transition-colors"
         >
           Zurück zur Übersicht
         </Link>
@@ -75,7 +75,7 @@ export function EinreichFormular({
             value={vorname}
             onChange={(e) => setVorname(e.target.value)}
             placeholder="z.B. Andreas"
-            className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500"
+            className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand-500"
           />
         </div>
         <div>
@@ -84,7 +84,7 @@ export function EinreichFormular({
             value={nachname}
             onChange={(e) => setNachname(e.target.value)}
             placeholder="z.B. Huber"
-            className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500"
+            className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand-500"
           />
         </div>
       </div>
@@ -104,7 +104,7 @@ export function EinreichFormular({
             type="date"
             value={verfuegbarBis}
             onChange={(e) => setVerfuegbarBis(e.target.value)}
-            className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500"
+            className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand-500"
           />
           <p className="text-xs text-slate-400 mt-1">
             Datum, bis zu dem der Kandidat garantiert verfügbar und erreichbar ist.
@@ -115,7 +115,7 @@ export function EinreichFormular({
       <div>
         <label className="block text-sm font-medium text-slate-700 mb-1.5">Qualifikationen</label>
         <input
-          className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500"
+          className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand-500"
           placeholder="z.B. EFZ Maler, Gerüstbau, Fahrausweis (mit Komma getrennt)"
         />
       </div>
@@ -128,7 +128,7 @@ export function EinreichFormular({
           <input
             type="tel"
             placeholder="z.B. +41 79 123 45 67"
-            className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500"
+            className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand-500"
           />
         </div>
         <div>
@@ -138,7 +138,7 @@ export function EinreichFormular({
           <input
             type="email"
             placeholder="z.B. kandidat@example.com"
-            className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500"
+            className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand-500"
           />
         </div>
       </div>
@@ -152,7 +152,7 @@ export function EinreichFormular({
         </label>
         <textarea
           rows={3}
-          className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500"
+          className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand-500"
           placeholder="Kurze Beschreibung, warum dieser Kandidat passt."
         />
       </div>
@@ -215,7 +215,7 @@ export function EinreichFormular({
 
       <button
         type="submit"
-        className="w-full px-5 py-3 rounded-lg bg-emerald-600 text-white font-medium hover:bg-emerald-700 transition"
+        className="w-full px-5 py-3 rounded-lg bg-brand-600 text-white font-medium hover:bg-brand-700 transition-colors"
       >
         Kandidat einreichen
       </button>
@@ -238,7 +238,7 @@ function Field({
       <input
         type={type}
         placeholder={placeholder}
-        className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500"
+        className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand-500"
       />
     </div>
   );

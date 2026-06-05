@@ -135,7 +135,7 @@ export function KandidatenListe({
                     <>
                       <button
                         onClick={() => auswaehlen(k)}
-                        className="px-4 py-2 rounded-lg bg-emerald-600 text-white text-sm font-medium hover:bg-emerald-700 transition"
+                        className="px-4 py-2 rounded-lg bg-brand-600 text-white text-sm font-medium hover:bg-brand-700 transition-colors"
                       >
                         Auswählen
                       </button>

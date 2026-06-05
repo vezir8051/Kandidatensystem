@@ -9,46 +9,59 @@ export default function Home() {
       <Header />
 
       {/* Hero */}
-      <section className="relative overflow-hidden bg-gradient-to-b from-brand-50 via-white to-white">
-        {/* dezenter Indigo/Violett-Glow */}
-        <div
-          aria-hidden
-          className="pointer-events-none absolute -top-32 left-1/2 -translate-x-1/2 h-[420px] w-[820px] rounded-full bg-gradient-to-r from-brand-300/40 via-accent-300/30 to-brand-200/40 blur-3xl"
-        />
-        <div className="relative max-w-6xl mx-auto px-4 py-24 text-center">
-          <p className="inline-block text-brand-700 bg-white/70 ring-1 ring-brand-100 rounded-full px-4 py-1.5 text-sm font-medium mb-6 shadow-soft">
+      <section className="bg-white">
+        <div className="max-w-5xl mx-auto px-4 py-20 md:py-24 text-center">
+          <p className="inline-block text-brand-600 bg-brand-50 rounded-full px-4 py-1.5 text-sm font-medium mb-6">
             Die Schweizer Plattform für temporäre Vermittlung
           </p>
-          <h1 className="text-balance text-4xl md:text-6xl font-bold text-slate-900 max-w-3xl mx-auto leading-[1.05]">
+          <h1 className="text-balance text-4xl md:text-6xl font-bold text-ink max-w-3xl mx-auto leading-[1.08]">
             Schluss mit Kaltakquise.{" "}
-            <span className="bg-gradient-to-r from-brand-600 to-accent-500 bg-clip-text text-transparent">
-              Firmen und Vermittlungsbüros
-            </span>{" "}
-            finden sich hier.
+            <span className="text-brand-600">Firmen und Vermittlungsbüros</span> finden sich hier.
           </h1>
-          <p className="mt-6 text-lg text-slate-600 max-w-2xl mx-auto">
+          <p className="mt-6 text-lg text-body max-w-2xl mx-auto">
             Firmen inserieren ihren Personalbedarf. Temporär-Vermittlungen reichen passende
             Kandidaten ein. Effizient, transparent, fair.
           </p>
 
+          {/* Such-Pill im Airbnb-Stil (führt in die Agentur-Ansicht) */}
+          <Link
+            href="/agentur"
+            className="group mt-10 inline-flex items-center bg-white border border-slate-200 rounded-full shadow-soft hover:shadow-card transition-shadow overflow-hidden text-left"
+          >
+            <span className="px-6 py-3 border-r border-slate-200">
+              <span className="block text-xs font-medium text-ink">Beruf</span>
+              <span className="block text-sm text-muted">z.B. Maler, Koch …</span>
+            </span>
+            <span className="px-6 py-3 border-r border-slate-200 hidden sm:block">
+              <span className="block text-xs font-medium text-ink">Ort</span>
+              <span className="block text-sm text-muted">Ganze Schweiz</span>
+            </span>
+            <span className="pl-5 pr-2 py-2 flex items-center gap-2">
+              <span className="hidden sm:block text-sm font-medium text-ink">Inserate ansehen</span>
+              <span className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-brand-600 text-white text-lg group-hover:bg-brand-700 transition-colors">
+                🔍
+              </span>
+            </span>
+          </Link>
+
           {/* Demo-Login-Buttons */}
-          <div className="mt-10 flex flex-col sm:flex-row gap-4 justify-center">
+          <div className="mt-8 flex flex-col sm:flex-row gap-3 justify-center">
             <Link
               href="/firma"
-              className="px-8 py-4 rounded-xl bg-brand-600 text-white font-semibold hover:bg-brand-700 hover:-translate-y-0.5 transition-all shadow-glow"
+              className="px-7 py-3.5 rounded-lg bg-brand-600 text-white font-medium hover:bg-brand-700 transition-colors"
             >
               🏢 Als Firma ansehen
             </Link>
             <Link
               href="/agentur"
-              className="px-8 py-4 rounded-xl bg-white text-slate-800 font-semibold ring-1 ring-slate-200 hover:ring-brand-300 hover:-translate-y-0.5 transition-all shadow-soft"
+              className="px-7 py-3.5 rounded-lg bg-white text-ink font-medium border border-ink hover:bg-slate-50 transition-colors"
             >
               🤝 Als Agentur ansehen
             </Link>
           </div>
-          <p className="mt-4 text-sm text-slate-400">
+          <p className="mt-4 text-sm text-muted">
             Demo – einfach reinklicken, keine Anmeldung nötig ·{" "}
-            <Link href="/admin" className="underline hover:text-slate-600">
+            <Link href="/admin" className="underline hover:text-ink">
               Admin-Ansicht
             </Link>
           </p>
@@ -65,10 +78,10 @@ export default function Home() {
             { zahl: "29 CHF", text: "pro Monat für Agenturen" },
           ].map((s) => (
             <div key={s.text}>
-              <div className="tabular text-2xl md:text-3xl font-bold bg-gradient-to-r from-brand-600 to-accent-500 bg-clip-text text-transparent">
+              <div className="tabular text-2xl md:text-3xl font-bold text-ink">
                 {s.zahl}
               </div>
-              <div className="text-sm text-slate-500 mt-1">{s.text}</div>
+              <div className="text-sm text-muted mt-1">{s.text}</div>
             </div>
           ))}
         </div>
@@ -99,13 +112,13 @@ export default function Home() {
           ].map((s) => (
             <div
               key={s.nr}
-              className="bg-white rounded-2xl border border-slate-100 p-7 shadow-soft hover:shadow-card hover:-translate-y-0.5 transition-all"
+              className="bg-white rounded-2xl border border-slate-200 p-7 hover:shadow-card transition-shadow"
             >
-              <div className="w-11 h-11 rounded-xl bg-gradient-to-br from-brand-500 to-accent-500 text-white font-bold flex items-center justify-center mb-5 shadow-glow">
+              <div className="w-11 h-11 rounded-lg bg-brand-600 text-white font-bold flex items-center justify-center mb-5">
                 {s.nr}
               </div>
-              <h3 className="font-semibold text-lg text-slate-900 mb-2">{s.titel}</h3>
-              <p className="text-slate-600 text-sm leading-relaxed">{s.text}</p>
+              <h3 className="font-semibold text-lg text-ink mb-2">{s.titel}</h3>
+              <p className="text-body text-sm leading-relaxed">{s.text}</p>
             </div>
           ))}
         </div>
@@ -114,30 +127,30 @@ export default function Home() {
       {/* Zwei Zielgruppen */}
       <section className="max-w-6xl mx-auto px-4 py-8">
         <div className="grid md:grid-cols-2 gap-6">
-          <div className="rounded-2xl p-8 text-white bg-gradient-to-br from-brand-600 to-brand-700 shadow-card">
-            <h3 className="text-xl font-bold mb-3">Für Firmen</h3>
-            <ul className="space-y-2 text-brand-50 text-sm">
-              <li>✓ Kostenlos registrieren und inserieren</li>
-              <li>✓ Mehrere Kandidaten auf einen Blick vergleichen</li>
-              <li>✓ Keine Anrufe von Dutzenden Agenturen mehr</li>
+          <div className="rounded-2xl p-8 bg-white border border-slate-200">
+            <h3 className="text-xl font-bold mb-3 text-ink">Für Firmen</h3>
+            <ul className="space-y-2 text-body text-sm">
+              <li className="text-brand-600">✓ <span className="text-body">Kostenlos registrieren und inserieren</span></li>
+              <li className="text-brand-600">✓ <span className="text-body">Mehrere Kandidaten auf einen Blick vergleichen</span></li>
+              <li className="text-brand-600">✓ <span className="text-body">Keine Anrufe von Dutzenden Agenturen mehr</span></li>
             </ul>
             <Link
               href="/firma"
-              className="inline-block mt-6 px-5 py-2.5 rounded-lg bg-white text-brand-700 font-medium hover:bg-brand-50 transition"
+              className="inline-block mt-6 px-5 py-2.5 rounded-lg bg-brand-600 text-white font-medium hover:bg-brand-700 transition-colors"
             >
               Firmen-Ansicht öffnen →
             </Link>
           </div>
-          <div className="rounded-2xl p-8 text-white bg-gradient-to-br from-emerald-500 to-emerald-700 shadow-card">
-            <h3 className="text-xl font-bold mb-3">Für Vermittlungsbüros</h3>
-            <ul className="space-y-2 text-emerald-50 text-sm">
-              <li>✓ Nur 29 CHF/Monat, jederzeit kündbar</li>
-              <li>✓ Zugang zu Firmen mit echtem Bedarf</li>
-              <li>✓ Keine Kaltakquise mehr nötig</li>
+          <div className="rounded-2xl p-8 bg-white border border-slate-200">
+            <h3 className="text-xl font-bold mb-3 text-ink">Für Vermittlungsbüros</h3>
+            <ul className="space-y-2 text-body text-sm">
+              <li className="text-brand-600">✓ <span className="text-body">Nur 29 CHF/Monat, jederzeit kündbar</span></li>
+              <li className="text-brand-600">✓ <span className="text-body">Zugang zu Firmen mit echtem Bedarf</span></li>
+              <li className="text-brand-600">✓ <span className="text-body">Keine Kaltakquise mehr nötig</span></li>
             </ul>
             <Link
               href="/agentur"
-              className="inline-block mt-6 px-5 py-2.5 rounded-lg bg-white text-emerald-700 font-medium hover:bg-emerald-50 transition"
+              className="inline-block mt-6 px-5 py-2.5 rounded-lg bg-ink text-white font-medium hover:bg-black transition-colors"
             >
               Agentur-Ansicht öffnen →
             </Link>
@@ -154,8 +167,8 @@ export default function Home() {
           Für Firmen ist TempMatch kostenlos. Agenturen wählen das passende Abo.
         </p>
         <div className="grid md:grid-cols-2 gap-6 max-w-3xl mx-auto">
-          <div className="bg-white rounded-2xl border border-slate-100 p-8 shadow-soft">
-            <h3 className="font-semibold text-slate-900">Starter</h3>
+          <div className="bg-white rounded-2xl border border-slate-200 p-8">
+            <h3 className="font-semibold text-ink">Starter</h3>
             <div className="mt-3">
               <span className="tabular text-4xl font-bold text-slate-900">29</span>
               <span className="text-slate-500"> CHF/Monat</span>
@@ -167,8 +180,8 @@ export default function Home() {
               <li>✓ Monatlich kündbar</li>
             </ul>
           </div>
-          <div className="bg-white rounded-2xl ring-2 ring-brand-500 p-8 relative shadow-card">
-            <span className="absolute -top-3 left-8 bg-gradient-to-r from-brand-600 to-accent-500 text-white text-xs font-medium px-3 py-1 rounded-full shadow-glow">
+          <div className="bg-white rounded-2xl ring-2 ring-brand-500 p-8 relative">
+            <span className="absolute -top-3 left-8 bg-brand-600 text-white text-xs font-medium px-3 py-1 rounded-full">
               Beliebt
             </span>
             <h3 className="font-semibold text-slate-900">Professional</h3>
@@ -231,14 +244,10 @@ export default function Home() {
       </section>
 
       {/* Lead-Formular / Frühbucher */}
-      <section className="relative overflow-hidden bg-gradient-to-br from-brand-700 via-brand-700 to-accent-700">
-        <div
-          aria-hidden
-          className="pointer-events-none absolute -bottom-24 -right-16 h-80 w-80 rounded-full bg-accent-400/30 blur-3xl"
-        />
-        <div className="relative max-w-6xl mx-auto px-4 py-20 text-center">
+      <section className="bg-ink">
+        <div className="max-w-6xl mx-auto px-4 py-20 text-center">
           <h2 className="text-3xl font-bold text-white">Jetzt vormerken</h2>
-          <p className="text-brand-100 mt-2 mb-8 max-w-lg mx-auto">
+          <p className="text-slate-300 mt-2 mb-8 max-w-lg mx-auto">
             Tragen Sie sich auf die Frühbucher-Liste ein und sichern Sie sich den Start-Rabatt für
             die ersten drei Monate.
           </p>

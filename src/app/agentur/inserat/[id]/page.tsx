@@ -24,7 +24,7 @@ export default async function KandidatEinreichen({
       <Header rolle="agentur" />
 
       <main className="max-w-3xl mx-auto px-4 py-10">
-        <Link href="/agentur" className="text-sm text-emerald-600 hover:underline">
+        <Link href="/agentur" className="text-sm text-brand-600 hover:underline">
           ← Zurück zur Übersicht
         </Link>
 

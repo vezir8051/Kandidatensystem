@@ -35,7 +35,7 @@ export default function AdminDashboard() {
           {kennzahlen.map((k) => (
             <div key={k.label} className="bg-white rounded-2xl border border-slate-100 p-5 shadow-soft">
               <div className="text-2xl">{k.icon}</div>
-              <div className="tabular text-3xl font-bold bg-gradient-to-r from-brand-600 to-accent-500 bg-clip-text text-transparent mt-2">
+              <div className="tabular text-3xl font-bold text-ink mt-2">
                 {k.wert}
               </div>
               <div className="text-sm text-slate-500">{k.label}</div>

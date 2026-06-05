@@ -21,34 +21,34 @@ export function Header({
   name?: string;
 }) {
   return (
-    <header className="sticky top-0 z-20 bg-white/80 backdrop-blur-md border-b border-slate-200/70">
-      <div className="max-w-6xl mx-auto px-4 h-16 flex items-center justify-between">
+    <header className="sticky top-0 z-20 bg-white border-b border-slate-200">
+      <div className="max-w-6xl mx-auto px-4 h-20 flex items-center justify-between">
         <Link href="/" className="flex items-center gap-2.5">
-          <span className="inline-flex items-center justify-center w-9 h-9 rounded-xl bg-gradient-to-br from-brand-500 to-accent-500 text-white font-bold text-lg shadow-glow">
+          <span className="inline-flex items-center justify-center w-9 h-9 rounded-lg bg-brand-600 text-white font-bold text-lg">
             T
           </span>
-          <span className="font-bold text-xl tracking-tight text-slate-900">TempMatch</span>
+          <span className="font-bold text-xl tracking-tight text-brand-600">TempMatch</span>
         </Link>
         <nav className="flex items-center gap-2 text-sm">
           {rolle === "firma" && (
-            <span className="px-3 py-1 rounded-full bg-brand-50 text-brand-700 font-medium">
+            <span className="px-3 py-1 rounded-full bg-brand-50 text-brand-600 font-medium">
               {name ? `Firma: ${name}` : "Angemeldet als Firma"}
             </span>
           )}
           {rolle === "agentur" && (
-            <span className="px-3 py-1 rounded-full bg-emerald-50 text-emerald-700 font-medium">
+            <span className="px-3 py-1 rounded-full bg-slate-50 text-ink font-medium border border-slate-200">
               {name ? `Agentur: ${name}` : "Angemeldet als Agentur"}
             </span>
           )}
           {rolle === "admin" && (
-            <span className="px-3 py-1 rounded-full bg-slate-900 text-white font-medium">
+            <span className="px-3 py-1 rounded-full bg-ink text-white font-medium">
               Admin-Bereich
             </span>
           )}
           {rolle && (
             <Link
               href="/"
-              className="px-3 py-1.5 rounded-lg text-slate-600 hover:bg-slate-100 transition"
+              className="px-3 py-1.5 rounded-lg text-body hover:bg-slate-50 transition-colors"
             >
               Abmelden
             </Link>
@@ -103,7 +103,7 @@ export function Footer() {
     <footer className="border-t border-slate-200 mt-20 py-10 text-sm text-slate-500">
       <div className="max-w-6xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-4">
         <div className="flex items-center gap-2">
-          <span className="inline-flex items-center justify-center w-7 h-7 rounded-lg bg-gradient-to-br from-brand-500 to-accent-500 text-white font-bold text-sm">
+          <span className="inline-flex items-center justify-center w-7 h-7 rounded-lg bg-brand-600 text-white font-bold text-sm">
             T
           </span>
           <p>TempMatch · Demo-Version · {new Date().getFullYear()}</p>
