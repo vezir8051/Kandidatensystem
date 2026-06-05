@@ -99,12 +99,12 @@ export function KandidatenListe({
           return (
             <div
               key={k.id}
-              className={`bg-white rounded-xl border p-5 transition ${
+              className={`bg-white rounded-2xl border p-5 shadow-soft transition ${
                 istAusgewaehlt
                   ? "border-emerald-300 ring-1 ring-emerald-200"
                   : status === "ABGELEHNT"
-                    ? "border-slate-200 opacity-60"
-                    : "border-slate-200"
+                    ? "border-slate-100 opacity-60"
+                    : "border-slate-100"
               }`}
             >
               <div className="flex flex-wrap items-start justify-between gap-3">

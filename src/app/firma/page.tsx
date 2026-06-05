@@ -41,7 +41,7 @@ export default function FirmaDashboard() {
             return (
               <div
                 key={inserat.id}
-                className="bg-white rounded-xl border border-slate-200 p-5 hover:border-brand-300 transition"
+                className="bg-white rounded-2xl border border-slate-100 p-5 shadow-soft hover:shadow-card hover:-translate-y-0.5 transition-all"
               >
                 <div className="flex flex-wrap items-start justify-between gap-3">
                   <div className="flex-1 min-w-0">

@@ -33,9 +33,11 @@ export default function AdminDashboard() {
         {/* Kennzahlen */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-10">
           {kennzahlen.map((k) => (
-            <div key={k.label} className="bg-white rounded-xl border border-slate-200 p-5">
+            <div key={k.label} className="bg-white rounded-2xl border border-slate-100 p-5 shadow-soft">
               <div className="text-2xl">{k.icon}</div>
-              <div className="text-3xl font-bold text-slate-900 mt-2">{k.wert}</div>
+              <div className="tabular text-3xl font-bold bg-gradient-to-r from-brand-600 to-accent-500 bg-clip-text text-transparent mt-2">
+                {k.wert}
+              </div>
               <div className="text-sm text-slate-500">{k.label}</div>
             </div>
           ))}
@@ -43,7 +45,7 @@ export default function AdminDashboard() {
 
         {/* Inserate-Tabelle */}
         <h2 className="text-lg font-semibold text-slate-900 mb-3">Alle Inserate</h2>
-        <div className="bg-white rounded-xl border border-slate-200 overflow-hidden mb-10">
+        <div className="bg-white rounded-2xl border border-slate-100 shadow-soft overflow-hidden mb-10">
           <table className="w-full text-sm">
             <thead className="bg-slate-50 text-slate-500 text-left">
               <tr>
@@ -74,7 +76,7 @@ export default function AdminDashboard() {
 
         {/* Abonnenten */}
         <h2 className="text-lg font-semibold text-slate-900 mb-3">Abonnenten (Agenturen)</h2>
-        <div className="bg-white rounded-xl border border-slate-200 overflow-hidden">
+        <div className="bg-white rounded-2xl border border-slate-100 shadow-soft overflow-hidden">
           <table className="w-full text-sm">
             <thead className="bg-slate-50 text-slate-500 text-left">
               <tr>

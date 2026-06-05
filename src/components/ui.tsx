@@ -4,9 +4,10 @@ import type { InseratStatus, KandidatStatus } from "@/lib/demo-data";
 // --- Demo-Banner ---
 export function DemoBanner() {
   return (
-    <div className="bg-amber-100 border-b border-amber-200 text-amber-900 text-center text-sm py-2 px-4">
-      🚧 <strong>Demo-Version</strong> – Alle Daten sind Beispieldaten. Keine echte Anmeldung,
-      keine Zahlungen.
+    <div className="bg-brand-600 text-white text-center text-sm py-2 px-4">
+      <span className="opacity-90">
+        Demo-Version – alle Daten sind Beispieldaten. Keine echte Anmeldung, keine Zahlungen.
+      </span>
     </div>
   );
 }
@@ -20,13 +21,13 @@ export function Header({
   name?: string;
 }) {
   return (
-    <header className="bg-white border-b border-slate-200 sticky top-0 z-10">
+    <header className="sticky top-0 z-20 bg-white/80 backdrop-blur-md border-b border-slate-200/70">
       <div className="max-w-6xl mx-auto px-4 h-16 flex items-center justify-between">
-        <Link href="/" className="flex items-center gap-2">
-          <span className="inline-flex items-center justify-center w-9 h-9 rounded-lg bg-brand-600 text-white font-bold text-lg">
+        <Link href="/" className="flex items-center gap-2.5">
+          <span className="inline-flex items-center justify-center w-9 h-9 rounded-xl bg-gradient-to-br from-brand-500 to-accent-500 text-white font-bold text-lg shadow-glow">
             T
           </span>
-          <span className="font-bold text-xl text-slate-900">TempMatch</span>
+          <span className="font-bold text-xl tracking-tight text-slate-900">TempMatch</span>
         </Link>
         <nav className="flex items-center gap-2 text-sm">
           {rolle === "firma" && (
@@ -40,7 +41,7 @@ export function Header({
             </span>
           )}
           {rolle === "admin" && (
-            <span className="px-3 py-1 rounded-full bg-slate-800 text-white font-medium">
+            <span className="px-3 py-1 rounded-full bg-slate-900 text-white font-medium">
               Admin-Bereich
             </span>
           )}
@@ -99,20 +100,25 @@ export function KandidatBadge({ status }: { status: KandidatStatus }) {
 // --- Footer ---
 export function Footer() {
   return (
-    <footer className="border-t border-slate-200 mt-16 py-8 text-sm text-slate-500">
+    <footer className="border-t border-slate-200 mt-20 py-10 text-sm text-slate-500">
       <div className="max-w-6xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-4">
-        <p>TempMatch – Demo-Version · Businessplan-Prototyp · {new Date().getFullYear()}</p>
+        <div className="flex items-center gap-2">
+          <span className="inline-flex items-center justify-center w-7 h-7 rounded-lg bg-gradient-to-br from-brand-500 to-accent-500 text-white font-bold text-sm">
+            T
+          </span>
+          <p>TempMatch · Demo-Version · {new Date().getFullYear()}</p>
+        </div>
         <nav className="flex items-center gap-4">
-          <Link href="/spielregeln" className="hover:text-slate-700 transition">
+          <Link href="/spielregeln" className="hover:text-brand-600 transition">
             Spielregeln
           </Link>
-          <Link href="/agb" className="hover:text-slate-700 transition">
+          <Link href="/agb" className="hover:text-brand-600 transition">
             AGB
           </Link>
-          <Link href="/datenschutz" className="hover:text-slate-700 transition">
+          <Link href="/datenschutz" className="hover:text-brand-600 transition">
             Datenschutz
           </Link>
-          <Link href="/impressum" className="hover:text-slate-700 transition">
+          <Link href="/impressum" className="hover:text-brand-600 transition">
             Impressum
           </Link>
         </nav>

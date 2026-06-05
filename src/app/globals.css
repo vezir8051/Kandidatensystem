@@ -3,12 +3,39 @@
 @tailwind utilities;
 
 :root {
-  --background: 248 250 252;
+  --background: 250 250 251;
   --foreground: 15 23 42;
+}
+
+html {
+  scroll-behavior: smooth;
 }
 
 body {
   color: rgb(var(--foreground));
   background: rgb(var(--background));
   -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+::selection {
+  background-color: rgb(79 70 229 / 0.18);
+  color: #312e81;
+}
+
+@layer base {
+  h1,
+  h2,
+  h3 {
+    letter-spacing: -0.02em;
+  }
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+  .tabular {
+    font-variant-numeric: tabular-nums;
+  }
 }

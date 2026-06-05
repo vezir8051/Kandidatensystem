@@ -29,7 +29,7 @@ export default async function KandidatEinreichen({
         </Link>
 
         {/* Inserat-Zusammenfassung */}
-        <div className="bg-white rounded-xl border border-slate-200 p-6 mt-4">
+        <div className="bg-white rounded-2xl border border-slate-100 p-6 mt-4 shadow-soft">
           <div className="flex items-center gap-3 flex-wrap">
             <h1 className="text-xl font-bold text-slate-900">{inserat.titel}</h1>
             <InseratBadge status={inserat.status} />

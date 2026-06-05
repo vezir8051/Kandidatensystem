@@ -64,7 +64,7 @@ export function EinreichFormular({
   return (
     <form
       onSubmit={absenden}
-      className="bg-white rounded-xl border border-slate-200 p-6 mt-6 space-y-5"
+      className="bg-white rounded-2xl border border-slate-100 p-6 mt-6 space-y-5 shadow-soft"
     >
       <h2 className="font-semibold text-slate-900">Kandidat einreichen</h2>
 
