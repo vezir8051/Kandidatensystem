@@ -1,7 +1,11 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { DemoBanner, Header, Footer, InseratBadge } from "@/components/ui";
-import { getInserat, getFirma } from "@/lib/demo-data";
+import { getInserat, getFirma, inserate } from "@/lib/demo-data";
+
+export function generateStaticParams() {
+  return inserate.map((i) => ({ id: i.id }));
+}
 
 export default function KandidatEinreichen({ params }: { params: { id: string } }) {
   const inserat = getInserat(params.id);

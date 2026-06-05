@@ -5,7 +5,12 @@ import {
   getInserat,
   getKandidatenFuerInserat,
   getAgentur,
+  inserate,
 } from "@/lib/demo-data";
+
+export function generateStaticParams() {
+  return inserate.map((i) => ({ id: i.id }));
+}
 
 export default function InseratDetail({ params }: { params: { id: string } }) {
   const inserat = getInserat(params.id);
