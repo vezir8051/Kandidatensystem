@@ -103,14 +103,17 @@ export function Footer() {
       <div className="max-w-6xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-4">
         <p>TempMatch – Demo-Version · Businessplan-Prototyp · {new Date().getFullYear()}</p>
         <nav className="flex items-center gap-4">
+          <Link href="/spielregeln" className="hover:text-slate-700 transition">
+            Spielregeln
+          </Link>
+          <Link href="/agb" className="hover:text-slate-700 transition">
+            AGB
+          </Link>
           <Link href="/datenschutz" className="hover:text-slate-700 transition">
             Datenschutz
           </Link>
           <Link href="/impressum" className="hover:text-slate-700 transition">
             Impressum
-          </Link>
-          <Link href="/agb" className="hover:text-slate-700 transition">
-            AGB
           </Link>
         </nav>
       </div>

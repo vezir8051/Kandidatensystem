@@ -12,8 +12,10 @@ function formatDatum(iso: string): string {
   });
 }
 
-// Interaktive Kandidatenliste für die Firmen-Sicht.
-// Auswählen/Ablehnen funktionieren lokal (Demo) und zeigen sofort Feedback.
+function isAbgelaufen(iso: string): boolean {
+  return new Date(iso) < new Date();
+}
+
 export function KandidatenListe({
   kandidaten,
   agenturen,
@@ -25,11 +27,13 @@ export function KandidatenListe({
     Object.fromEntries(kandidaten.map((k) => [k.id, k.status])),
   );
   const [meldung, setMeldung] = useState<string | null>(null);
+  const [gemeldet, setGemeldet] = useState<string | null>(null);
+
+  const ausgewaehlteId = Object.entries(stati).find(([, s]) => s === "AUSGEWAEHLT")?.[0] ?? null;
 
   function auswaehlen(k: Kandidat) {
     setStati((prev) => {
       const next: Record<string, KandidatStatus> = { ...prev };
-      // Pro Inserat kann nur EIN Kandidat ausgewählt sein – die anderen werden abgelehnt.
       for (const kand of kandidaten) {
         next[kand.id] = kand.id === k.id ? "AUSGEWAEHLT" : "ABGELEHNT";
       }
@@ -43,6 +47,11 @@ export function KandidatenListe({
   function ablehnen(k: Kandidat) {
     setStati((prev) => ({ ...prev, [k.id]: "ABGELEHNT" }));
     setMeldung(`${k.vorname} ${k.nachname} wurde nicht berücksichtigt.`);
+  }
+
+  function melden(k: Kandidat) {
+    setGemeldet(k.id);
+    setMeldung(`Meldung für ${k.vorname} ${k.nachname} wurde registriert. In der Vollversion wird das Admin-Team benachrichtigt.`);
   }
 
   if (kandidaten.length === 0) {
@@ -72,15 +81,26 @@ export function KandidatenListe({
         </div>
       )}
 
+      {ausgewaehlteId && (
+        <div className="bg-amber-50 border border-amber-200 text-amber-800 rounded-lg p-4 mb-4 text-sm">
+          <strong>Hinweis:</strong> Bitte wickeln Sie den Einsatz über die Agentur ab. Direktkontakt
+          mit dem Kandidaten unter Umgehung der Agentur ist gemäss AGB untersagt und kann zur
+          Sperrung Ihres Kontos führen.
+        </div>
+      )}
+
       <div className="space-y-4">
         {kandidaten.map((k) => {
           const status = stati[k.id];
           const agentur = agenturen[k.agenturId];
+          const istAusgewaehlt = status === "AUSGEWAEHLT";
+          const verfuegbarAbgelaufen = k.verfuegbarBis ? isAbgelaufen(k.verfuegbarBis) : false;
+
           return (
             <div
               key={k.id}
               className={`bg-white rounded-xl border p-5 transition ${
-                status === "AUSGEWAEHLT"
+                istAusgewaehlt
                   ? "border-emerald-300 ring-1 ring-emerald-200"
                   : status === "ABGELEHNT"
                     ? "border-slate-200 opacity-60"
@@ -99,11 +119,18 @@ export function KandidatenListe({
                     {k.beruf} · {k.erfahrungJahre} Jahre Erfahrung · verfügbar ab{" "}
                     {formatDatum(k.verfuegbarAb)}
                   </p>
+                  {k.verfuegbarBis && (
+                    <p className={`text-xs mt-0.5 ${verfuegbarAbgelaufen ? "text-red-600 font-medium" : "text-slate-400"}`}>
+                      {verfuegbarAbgelaufen
+                        ? "⚠ Verfügbarkeit prüfen – garantierte Verfügbarkeit bis " + formatDatum(k.verfuegbarBis) + " abgelaufen"
+                        : "Verfügbar bis: " + formatDatum(k.verfuegbarBis)}
+                    </p>
+                  )}
                   <p className="text-xs text-slate-400 mt-1">
                     Eingereicht von: {agentur?.name}
                   </p>
                 </div>
-                <div className="flex gap-2">
+                <div className="flex gap-2 flex-wrap">
                   {status === "AUSSTEHEND" && (
                     <>
                       <button
@@ -141,7 +168,26 @@ export function KandidatenListe({
                 „{k.notiz}"
               </p>
 
-              <div className="mt-4">
+              {istAusgewaehlt && (k.telefon || k.email) && (
+                <div className="mt-4 bg-emerald-50 border border-emerald-200 rounded-lg px-4 py-3">
+                  <p className="text-xs font-semibold text-emerald-700 mb-2">
+                    🔓 Kontaktdaten freigegeben (sichtbar nach Auswahl)
+                  </p>
+                  <div className="flex flex-wrap gap-4 text-sm text-slate-700">
+                    {k.telefon && (
+                      <span>📞 {k.telefon}</span>
+                    )}
+                    {k.email && (
+                      <span>✉ {k.email}</span>
+                    )}
+                  </div>
+                  <p className="text-xs text-slate-500 mt-2">
+                    Bitte nehmen Sie den Kontakt ausschliesslich über die Agentur auf.
+                  </p>
+                </div>
+              )}
+
+              <div className="mt-4 flex items-center gap-4">
                 <button
                   onClick={() =>
                     setMeldung(
@@ -152,6 +198,17 @@ export function KandidatenListe({
                 >
                   📄 Lebenslauf (PDF) ansehen
                 </button>
+                {gemeldet !== k.id && (
+                  <button
+                    onClick={() => melden(k)}
+                    className="text-xs text-slate-400 hover:text-red-500 transition"
+                  >
+                    Kandidat melden
+                  </button>
+                )}
+                {gemeldet === k.id && (
+                  <span className="text-xs text-slate-400">✓ Gemeldet</span>
+                )}
               </div>
             </div>
           );

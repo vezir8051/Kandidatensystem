@@ -38,6 +38,9 @@ export interface Kandidat {
   erfahrungJahre: number;
   qualifikationen: string[];
   verfuegbarAb: string;
+  verfuegbarBis?: string;
+  telefon?: string;
+  email?: string;
   status: KandidatStatus;
   notiz: string;
 }
@@ -52,6 +55,7 @@ export interface Inserat {
   ort: string;
   startDatum: string;
   dauer: string;
+  festanstellungMoeglich?: boolean;
   status: InseratStatus;
   erstelltAm: string;
 }
@@ -109,6 +113,7 @@ export const inserate: Inserat[] = [
     ort: "Zürich",
     startDatum: "2026-06-15",
     dauer: "3 Wochen",
+    festanstellungMoeglich: false,
     status: "OFFEN",
     erstelltAm: "2026-06-02",
   },
@@ -123,6 +128,7 @@ export const inserate: Inserat[] = [
     ort: "Zürich",
     startDatum: "2026-06-20",
     dauer: "2 Wochen",
+    festanstellungMoeglich: false,
     status: "OFFEN",
     erstelltAm: "2026-06-03",
   },
@@ -137,6 +143,7 @@ export const inserate: Inserat[] = [
     ort: "Winterthur",
     startDatum: "2026-07-01",
     dauer: "2 Monate",
+    festanstellungMoeglich: true,
     status: "OFFEN",
     erstelltAm: "2026-06-01",
   },
@@ -151,6 +158,7 @@ export const inserate: Inserat[] = [
     ort: "Dietikon",
     startDatum: "2026-06-10",
     dauer: "1 Monat",
+    festanstellungMoeglich: true,
     status: "OFFEN",
     erstelltAm: "2026-06-04",
   },
@@ -165,6 +173,7 @@ export const inserate: Inserat[] = [
     ort: "Dietikon",
     startDatum: "2026-06-12",
     dauer: "Unbefristet (temporär)",
+    festanstellungMoeglich: false,
     status: "OFFEN",
     erstelltAm: "2026-06-04",
   },
@@ -182,6 +191,9 @@ export const kandidaten: Kandidat[] = [
     erfahrungJahre: 8,
     qualifikationen: ["EFZ Maler", "Gerüstbau-Erfahrung", "Fahrausweis Kat. B"],
     verfuegbarAb: "2026-06-15",
+    verfuegbarBis: "2026-09-15",
+    telefon: "+41 79 123 45 67",
+    email: "a.huber@example.com",
     status: "AUSSTEHEND",
     notiz: "Sehr zuverlässig, war bereits in mehreren Grossprojekten im Einsatz.",
   },
@@ -195,6 +207,9 @@ export const kandidaten: Kandidat[] = [
     erfahrungJahre: 5,
     qualifikationen: ["EFZ Maler", "Tapezier-Spezialist"],
     verfuegbarAb: "2026-06-16",
+    verfuegbarBis: "2026-09-16",
+    telefon: "+41 76 234 56 78",
+    email: "l.petrovic@example.com",
     status: "AUSSTEHEND",
     notiz: "Spezialisiert auf hochwertige Innenanstriche und Tapezierarbeiten.",
   },
@@ -209,6 +224,9 @@ export const kandidaten: Kandidat[] = [
     erfahrungJahre: 12,
     qualifikationen: ["EFZ Schreiner", "CNC-Erfahrung", "Vorarbeiter"],
     verfuegbarAb: "2026-06-20",
+    verfuegbarBis: "2026-12-20",
+    telefon: "+41 78 345 67 89",
+    email: "m.steiner@example.com",
     status: "AUSSTEHEND",
     notiz: "Langjährige Erfahrung im Innenausbau, kann auch ein Team führen.",
   },
@@ -223,6 +241,9 @@ export const kandidaten: Kandidat[] = [
     erfahrungJahre: 6,
     qualifikationen: ["Kochlehre EFZ", "Erfahrung Gourmetküche", "Allergen-Schulung"],
     verfuegbarAb: "2026-07-01",
+    verfuegbarBis: "2026-09-30",
+    telefon: "+41 79 456 78 90",
+    email: "s.rossi@example.com",
     status: "AUSGEWAEHLT",
     notiz: "Kreativ, schnell, hervorragende Referenzen aus der gehobenen Gastronomie.",
   },
@@ -236,6 +257,9 @@ export const kandidaten: Kandidat[] = [
     erfahrungJahre: 3,
     qualifikationen: ["Kochlehre EFZ", "à-la-carte Erfahrung"],
     verfuegbarAb: "2026-07-03",
+    verfuegbarBis: "2026-08-31",
+    telefon: "+41 76 567 89 01",
+    email: "j.meier@example.com",
     status: "ABGELEHNT",
     notiz: "Junger, motivierter Koch mit solider Grundausbildung.",
   },
@@ -250,6 +274,9 @@ export const kandidaten: Kandidat[] = [
     erfahrungJahre: 4,
     qualifikationen: ["Staplerausweis Kat. R", "Logistik-Grundkurs", "Schichterfahrung"],
     verfuegbarAb: "2026-06-10",
+    verfuegbarBis: "2026-07-10",
+    telefon: "+41 78 678 90 12",
+    email: "a.yilmaz@example.com",
     status: "AUSSTEHEND",
     notiz: "Erfahren im Umgang mit Lagerverwaltungssystemen (SAP).",
   },
@@ -264,6 +291,9 @@ export const kandidaten: Kandidat[] = [
     erfahrungJahre: 7,
     qualifikationen: ["Gebäudereinigung", "Bodenpflege-Maschinen", "Referenzen vorhanden"],
     verfuegbarAb: "2026-06-12",
+    verfuegbarBis: "2026-09-12",
+    telefon: "+41 79 789 01 23",
+    email: "m.santos@example.com",
     status: "AUSSTEHEND",
     notiz: "Sehr gründlich und zuverlässig, langjährige Unterhaltsreinigung.",
   },

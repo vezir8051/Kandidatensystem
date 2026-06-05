@@ -8,11 +8,13 @@ export function InseratErstellenButton() {
   const [offen, setOffen] = useState(false);
   const [fertig, setFertig] = useState(false);
   const [titel, setTitel] = useState("");
+  const [festanstellung, setFestanstellung] = useState(false);
 
   function schliessen() {
     setOffen(false);
     setFertig(false);
     setTitel("");
+    setFestanstellung(false);
   }
 
   return (
@@ -108,6 +110,23 @@ export function InseratErstellenButton() {
                     className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand-500"
                   />
                 </div>
+
+                <label className="flex items-start gap-2 text-sm text-slate-600 cursor-pointer">
+                  <input
+                    type="checkbox"
+                    checked={festanstellung}
+                    onChange={(e) => setFestanstellung(e.target.checked)}
+                    className="rounded mt-0.5"
+                  />
+                  <span>
+                    Festanstellung des Kandidaten möglich (gegen Vermittlungsgebühr, bilateral vereinbart)
+                  </span>
+                </label>
+
+                <p className="text-xs text-slate-400 bg-slate-50 border border-slate-200 rounded-lg px-3 py-2">
+                  Inserate ohne Auswahl werden nach <strong>30 Tagen</strong> automatisch archiviert.
+                  Sie erhalten vorher eine Erinnerung.
+                </p>
 
                 <button
                   type="submit"

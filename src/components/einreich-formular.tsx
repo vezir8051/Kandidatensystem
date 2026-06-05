@@ -3,8 +3,6 @@
 import Link from "next/link";
 import { useState } from "react";
 
-// Demo-Formular: validiert lokal und zeigt nach Absenden eine Bestätigung.
-// In der Vollversion würde hier ein echter API-Call erfolgen.
 export function EinreichFormular({
   beruf,
   inseratTitel,
@@ -15,7 +13,10 @@ export function EinreichFormular({
   const [abgeschickt, setAbgeschickt] = useState(false);
   const [vorname, setVorname] = useState("");
   const [nachname, setNachname] = useState("");
-  const [einverstanden, setEinverstanden] = useState(false);
+  const [verfuegbarBis, setVerfuegbarBis] = useState("");
+  const [einverstaendnis, setEinverstaendnis] = useState(false);
+  const [wahrheit, setWahrheit] = useState(false);
+  const [erreichbar, setErreichbar] = useState(false);
   const [fehler, setFehler] = useState<string | null>(null);
 
   function absenden(e: React.FormEvent) {
@@ -24,8 +25,12 @@ export function EinreichFormular({
       setFehler("Bitte Vor- und Nachname ausfüllen.");
       return;
     }
-    if (!einverstanden) {
-      setFehler("Bitte bestätigen Sie das Einverständnis des Kandidaten (nDSG).");
+    if (!verfuegbarBis) {
+      setFehler("Bitte das Datum angeben, bis wann der Kandidat verfügbar ist.");
+      return;
+    }
+    if (!einverstaendnis || !wahrheit || !erreichbar) {
+      setFehler("Bitte alle drei Bestätigungen ankreuzen.");
       return;
     }
     setFehler(null);
@@ -89,7 +94,23 @@ export function EinreichFormular({
         <Field label="Jahre Erfahrung" placeholder="z.B. 8" type="number" />
       </div>
 
-      <Field label="Verfügbar ab" type="date" />
+      <div className="grid sm:grid-cols-2 gap-4">
+        <Field label="Verfügbar ab" type="date" />
+        <div>
+          <label className="block text-sm font-medium text-slate-700 mb-1.5">
+            Verfügbar bis *
+          </label>
+          <input
+            type="date"
+            value={verfuegbarBis}
+            onChange={(e) => setVerfuegbarBis(e.target.value)}
+            className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500"
+          />
+          <p className="text-xs text-slate-400 mt-1">
+            Datum, bis zu dem der Kandidat garantiert verfügbar und erreichbar ist.
+          </p>
+        </div>
+      </div>
 
       <div>
         <label className="block text-sm font-medium text-slate-700 mb-1.5">Qualifikationen</label>
@@ -98,6 +119,32 @@ export function EinreichFormular({
           placeholder="z.B. EFZ Maler, Gerüstbau, Fahrausweis (mit Komma getrennt)"
         />
       </div>
+
+      <div className="grid sm:grid-cols-2 gap-4">
+        <div>
+          <label className="block text-sm font-medium text-slate-700 mb-1.5">
+            Telefon Kandidat
+          </label>
+          <input
+            type="tel"
+            placeholder="z.B. +41 79 123 45 67"
+            className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500"
+          />
+        </div>
+        <div>
+          <label className="block text-sm font-medium text-slate-700 mb-1.5">
+            E-Mail Kandidat
+          </label>
+          <input
+            type="email"
+            placeholder="z.B. kandidat@example.com"
+            className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500"
+          />
+        </div>
+      </div>
+      <p className="text-xs text-amber-700 bg-amber-50 border border-amber-200 rounded-lg px-3 py-2 -mt-2">
+        Kontaktdaten werden der Firma erst dann freigegeben, wenn sie diesen Kandidaten auswählt.
+      </p>
 
       <div>
         <label className="block text-sm font-medium text-slate-700 mb-1.5">
@@ -117,17 +164,48 @@ export function EinreichFormular({
         </div>
       </div>
 
-      <label className="flex items-center gap-2 text-sm text-slate-600 cursor-pointer">
-        <input
-          type="checkbox"
-          checked={einverstanden}
-          onChange={(e) => setEinverstanden(e.target.checked)}
-          className="rounded"
-        />
-        <span>
-          Der Kandidat hat sein Einverständnis zur Weitergabe seiner Daten gegeben (nDSG).
-        </span>
-      </label>
+      <div className="space-y-3 border border-slate-200 rounded-lg p-4 bg-slate-50">
+        <p className="text-xs font-semibold text-slate-600 uppercase tracking-wide">
+          Pflichtbestätigungen
+        </p>
+        <label className="flex items-start gap-2 text-sm text-slate-600 cursor-pointer">
+          <input
+            type="checkbox"
+            checked={einverstaendnis}
+            onChange={(e) => setEinverstaendnis(e.target.checked)}
+            className="rounded mt-0.5"
+          />
+          <span>
+            Der Kandidat hat sein ausdrückliches Einverständnis zur Weitergabe seiner Daten an
+            die Firma erteilt (nDSG). Ich bestätige, dass ich als Agentur datenschutzrechtlich
+            verantwortlich bin.
+          </span>
+        </label>
+        <label className="flex items-start gap-2 text-sm text-slate-600 cursor-pointer">
+          <input
+            type="checkbox"
+            checked={wahrheit}
+            onChange={(e) => setWahrheit(e.target.checked)}
+            className="rounded mt-0.5"
+          />
+          <span>
+            Alle Angaben zu diesem Kandidaten (Qualifikationen, Zertifikate, Berufserfahrung)
+            sind wahrheitsgetreu und vollständig.
+          </span>
+        </label>
+        <label className="flex items-start gap-2 text-sm text-slate-600 cursor-pointer">
+          <input
+            type="checkbox"
+            checked={erreichbar}
+            onChange={(e) => setErreichbar(e.target.checked)}
+            className="rounded mt-0.5"
+          />
+          <span>
+            Der Kandidat ist verfügbar und bis zum angegebenen Datum kontaktierbar. Ich garantiere
+            seine Erreichbarkeit nach einer allfälligen Auswahl durch die Firma.
+          </span>
+        </label>
+      </div>
 
       {fehler && (
         <p className="text-sm text-red-600 bg-red-50 border border-red-200 rounded-lg px-3 py-2">
