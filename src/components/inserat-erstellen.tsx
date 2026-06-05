@@ -31,8 +31,8 @@ export function InseratErstellenButton() {
           <div className="bg-white rounded-2xl w-full max-w-lg p-6 shadow-xl">
             {fertig ? (
               <div className="text-center py-4">
-                <div className="w-14 h-14 rounded-full bg-emerald-100 text-emerald-600 text-2xl flex items-center justify-center mx-auto">
-                  ✓
+                <div className="w-14 h-14 rounded-full bg-emerald-100 flex items-center justify-center mx-auto">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="#059669" strokeWidth="2.5"><path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7"/></svg>
                 </div>
                 <h3 className="text-lg font-bold text-slate-900 mt-3">Inserat veröffentlicht!</h3>
                 <p className="text-slate-600 mt-1 text-sm">

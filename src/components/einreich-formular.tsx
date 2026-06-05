@@ -40,8 +40,8 @@ export function EinreichFormular({
   if (abgeschickt) {
     return (
       <div className="bg-white rounded-xl border border-emerald-200 p-8 mt-6 text-center">
-        <div className="w-16 h-16 rounded-full bg-emerald-100 text-emerald-600 text-3xl flex items-center justify-center mx-auto">
-          ✓
+        <div className="w-16 h-16 rounded-full bg-emerald-100 flex items-center justify-center mx-auto">
+          <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="none" viewBox="0 0 24 24" stroke="#059669" strokeWidth="2.5"><path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7"/></svg>
         </div>
         <h2 className="text-xl font-bold text-slate-900 mt-4">Kandidat eingereicht!</h2>
         <p className="text-slate-600 mt-2 max-w-md mx-auto">
@@ -160,7 +160,7 @@ export function EinreichFormular({
       <div>
         <label className="block text-sm font-medium text-slate-700 mb-1.5">Lebenslauf (PDF)</label>
         <div className="border-2 border-dashed border-slate-300 rounded-lg p-6 text-center text-sm text-slate-500">
-          📄 PDF hierher ziehen oder klicken zum Hochladen
+          PDF hierher ziehen oder klicken zum Hochladen
         </div>
       </div>
 

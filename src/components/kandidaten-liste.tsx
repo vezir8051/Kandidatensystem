@@ -57,7 +57,6 @@ export function KandidatenListe({
   if (kandidaten.length === 0) {
     return (
       <div className="bg-white rounded-xl border border-dashed border-slate-300 p-10 text-center">
-        <div className="text-4xl mb-3">📭</div>
         <p className="text-slate-600 font-medium">Noch keine Kandidaten eingereicht</p>
         <p className="text-sm text-slate-400 mt-1">
           Sobald Agenturen Kandidaten einreichen, erscheinen sie hier.
@@ -122,7 +121,7 @@ export function KandidatenListe({
                   {k.verfuegbarBis && (
                     <p className={`text-xs mt-0.5 ${verfuegbarAbgelaufen ? "text-red-600 font-medium" : "text-slate-400"}`}>
                       {verfuegbarAbgelaufen
-                        ? "⚠ Verfügbarkeit prüfen – garantierte Verfügbarkeit bis " + formatDatum(k.verfuegbarBis) + " abgelaufen"
+                        ? "Verfügbarkeit prüfen – garantierte Verfügbarkeit bis " + formatDatum(k.verfuegbarBis) + " abgelaufen"
                         : "Verfügbar bis: " + formatDatum(k.verfuegbarBis)}
                     </p>
                   )}
@@ -171,14 +170,14 @@ export function KandidatenListe({
               {istAusgewaehlt && (k.telefon || k.email) && (
                 <div className="mt-4 bg-emerald-50 border border-emerald-200 rounded-lg px-4 py-3">
                   <p className="text-xs font-semibold text-emerald-700 mb-2">
-                    🔓 Kontaktdaten freigegeben (sichtbar nach Auswahl)
+                    Kontaktdaten freigegeben
                   </p>
                   <div className="flex flex-wrap gap-4 text-sm text-slate-700">
                     {k.telefon && (
-                      <span>📞 {k.telefon}</span>
+                      <span>Tel. {k.telefon}</span>
                     )}
                     {k.email && (
-                      <span>✉ {k.email}</span>
+                      <span>{k.email}</span>
                     )}
                   </div>
                   <p className="text-xs text-slate-500 mt-2">
@@ -196,7 +195,7 @@ export function KandidatenListe({
                   }
                   className="inline-flex items-center gap-1 text-sm text-brand-600 hover:underline"
                 >
-                  📄 Lebenslauf (PDF) ansehen
+                  Lebenslauf (PDF) ansehen
                 </button>
                 {gemeldet !== k.id && (
                   <button

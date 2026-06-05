@@ -54,9 +54,9 @@ export default function FirmaDashboard() {
                     </div>
                     <p className="text-sm text-slate-600 mt-1">{inserat.beschreibung}</p>
                     <div className="flex flex-wrap gap-x-4 gap-y-1 mt-3 text-sm text-slate-500">
-                      <span>📍 {inserat.ort}</span>
-                      <span>📅 Start: {formatDatum(inserat.startDatum)}</span>
-                      <span>⏱️ {inserat.dauer}</span>
+                      <span>{inserat.ort}</span>
+                      <span>Start: {formatDatum(inserat.startDatum)}</span>
+                      <span>{inserat.dauer}</span>
                     </div>
                   </div>
                   <div className="text-right">

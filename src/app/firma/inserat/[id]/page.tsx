@@ -45,9 +45,9 @@ export default async function InseratDetail({
           </div>
           <p className="text-slate-600 mt-3">{inserat.beschreibung}</p>
           <div className="flex flex-wrap gap-x-6 gap-y-2 mt-4 text-sm text-slate-500">
-            <span>📍 {inserat.ort}</span>
-            <span>📅 Start: {formatDatum(inserat.startDatum)}</span>
-            <span>⏱️ Dauer: {inserat.dauer}</span>
+            <span>{inserat.ort}</span>
+            <span>Start: {formatDatum(inserat.startDatum)}</span>
+            <span>Dauer: {inserat.dauer}</span>
           </div>
           <div className="mt-4">
             <p className="text-sm font-medium text-slate-700 mb-2">Anforderungen:</p>

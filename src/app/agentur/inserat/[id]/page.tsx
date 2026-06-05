@@ -35,7 +35,7 @@ export default async function KandidatEinreichen({
             <InseratBadge status={inserat.status} />
           </div>
           <p className="text-sm text-slate-500 mt-1">
-            {firma?.name} · 📍 {inserat.ort} · ⏱️ {inserat.dauer}
+            {firma?.name} · {inserat.ort} · {inserat.dauer}
           </p>
           <div className="mt-3 flex flex-wrap gap-2">
             {inserat.anforderungen.map((a) => (
@@ -48,7 +48,7 @@ export default async function KandidatEinreichen({
 
         {/* Hinweis 1 Kandidat pro Inserat */}
         <div className="bg-amber-50 border border-amber-200 rounded-lg p-4 mt-6 text-sm text-amber-800">
-          ℹ️ Pro Inserat können Sie <strong>genau einen</strong> Kandidaten einreichen. Wählen Sie
+          Pro Inserat können Sie <strong>genau einen</strong> Kandidaten einreichen. Wählen Sie
           den am besten passenden aus Ihrem Pool.
         </div>
 

@@ -16,10 +16,10 @@ export default function AdminDashboard() {
   const offene = inserate.filter((i) => i.status === "OFFEN").length;
 
   const kennzahlen = [
-    { label: "Firmen", wert: firmen.length, icon: "🏢" },
-    { label: "Agenturen", wert: agenturen.length, icon: "🤝" },
-    { label: "Inserate (offen)", wert: offene, icon: "📋" },
-    { label: "Kandidaten", wert: kandidaten.length, icon: "👷" },
+    { label: "Firmen", wert: firmen.length },
+    { label: "Agenturen", wert: agenturen.length },
+    { label: "Inserate (offen)", wert: offene },
+    { label: "Kandidaten", wert: kandidaten.length },
   ];
 
   return (
@@ -33,9 +33,8 @@ export default function AdminDashboard() {
         {/* Kennzahlen */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-10">
           {kennzahlen.map((k) => (
-            <div key={k.label} className="bg-white rounded-2xl border border-slate-100 p-5 shadow-soft">
-              <div className="text-2xl">{k.icon}</div>
-              <div className="tabular text-3xl font-bold text-ink mt-2">
+            <div key={k.label} className="bg-white rounded-2xl border border-slate-200 p-5 shadow-soft">
+              <div className="tabular text-3xl font-bold text-ink">
                 {k.wert}
               </div>
               <div className="text-sm text-slate-500">{k.label}</div>

@@ -13,8 +13,7 @@ export function LeadFormular() {
   if (gesendet) {
     return (
       <div className="bg-white/10 backdrop-blur rounded-2xl p-8 text-center max-w-md mx-auto">
-        <div className="text-4xl">🎉</div>
-        <h3 className="text-xl font-bold text-white mt-3">Vielen Dank, {name}!</h3>
+        <h3 className="text-xl font-bold text-white">Vielen Dank, {name}!</h3>
         <p className="text-brand-50 mt-2 text-sm">
           Sie stehen auf der Frühbucher-Liste. Wir melden uns unter {email}, sobald TempMatch
           startet.

@@ -75,7 +75,6 @@ export default function AgenturDashboard() {
         {/* Abo-Status */}
         <div className="bg-emerald-50 border border-emerald-200 rounded-xl p-4 mb-8 flex flex-wrap items-center justify-between gap-3">
           <div className="flex items-center gap-3">
-            <span className="text-2xl">✓</span>
             <div>
               <p className="font-medium text-emerald-900">
                 Abonnement aktiv – Starter (29 CHF/Monat)
@@ -139,8 +138,7 @@ export default function AgenturDashboard() {
 
         {gefiltert.length === 0 ? (
           <div className="bg-white rounded-xl border border-dashed border-slate-300 p-10 text-center">
-            <div className="text-4xl mb-3">🔍</div>
-            <p className="text-slate-600 font-medium">Keine Inserate gefunden</p>
+              <p className="text-slate-600 font-medium">Keine Inserate gefunden</p>
             <p className="text-sm text-slate-400 mt-1">
               Passen Sie die Filter an, um mehr Inserate zu sehen.
             </p>
@@ -166,9 +164,9 @@ export default function AgenturDashboard() {
                       </p>
                       <p className="text-sm text-slate-600 mt-2">{inserat.beschreibung}</p>
                       <div className="flex flex-wrap gap-x-4 gap-y-1 mt-3 text-sm text-slate-500">
-                        <span>📍 {inserat.ort}</span>
-                        <span>📅 Start: {formatDatum(inserat.startDatum)}</span>
-                        <span>⏱️ {inserat.dauer}</span>
+                        <span>{inserat.ort}</span>
+                        <span>Start: {formatDatum(inserat.startDatum)}</span>
+                        <span>{inserat.dauer}</span>
                       </div>
                     </div>
                     <div className="text-right">
