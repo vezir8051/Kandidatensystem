@@ -55,20 +55,31 @@ export default function AgenturDashboard() {
               {agentur.ort} · Ansprechperson: {agentur.kontaktperson}
             </p>
           </div>
-          {/* Demo-Umschalter zwischen den Agenturen */}
-          <div>
-            <label className="block text-xs text-slate-400 mb-1">Demo: Agentur wechseln</label>
-            <select
-              value={agenturId}
-              onChange={(e) => setAgenturId(e.target.value)}
-              className="rounded-lg border border-slate-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand-500"
+          <div className="flex items-center gap-3 flex-wrap">
+            <Link
+              href="/agentur/radar"
+              className="inline-flex items-center gap-2 px-4 py-2 rounded-lg border border-slate-200 text-sm font-medium text-slate-700 hover:bg-slate-50 hover:border-slate-300 transition-colors"
             >
-              {agenturen.map((a) => (
-                <option key={a.id} value={a.id}>
-                  {a.name}
-                </option>
-              ))}
-            </select>
+              Markt-Radar
+              <span className="inline-flex items-center justify-center w-5 h-5 rounded-full bg-brand-600 text-white text-xs font-bold">
+                4
+              </span>
+            </Link>
+            {/* Demo-Umschalter zwischen den Agenturen */}
+            <div>
+              <label className="block text-xs text-slate-400 mb-1">Demo: Agentur wechseln</label>
+              <select
+                value={agenturId}
+                onChange={(e) => setAgenturId(e.target.value)}
+                className="rounded-lg border border-slate-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand-500"
+              >
+                {agenturen.map((a) => (
+                  <option key={a.id} value={a.id}>
+                    {a.name}
+                  </option>
+                ))}
+              </select>
+            </div>
           </div>
         </div>
 

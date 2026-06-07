@@ -41,6 +41,7 @@ export interface Kandidat {
   verfuegbarBis?: string;
   telefon?: string;
   email?: string;
+  fruehererArbeitgeber?: string;
   status: KandidatStatus;
   notiz: string;
 }
@@ -244,6 +245,7 @@ export const kandidaten: Kandidat[] = [
     verfuegbarBis: "2026-09-30",
     telefon: "+41 79 456 78 90",
     email: "s.rossi@example.com",
+    fruehererArbeitgeber: "Hotel Krone Winterthur",
     status: "AUSGEWAEHLT",
     notiz: "Kreativ, schnell, hervorragende Referenzen aus der gehobenen Gastronomie.",
   },
@@ -277,6 +279,7 @@ export const kandidaten: Kandidat[] = [
     verfuegbarBis: "2026-07-10",
     telefon: "+41 78 678 90 12",
     email: "a.yilmaz@example.com",
+    fruehererArbeitgeber: "Migros Genossenschaft",
     status: "AUSSTEHEND",
     notiz: "Erfahren im Umgang mit Lagerverwaltungssystemen (SAP).",
   },
@@ -294,6 +297,7 @@ export const kandidaten: Kandidat[] = [
     verfuegbarBis: "2026-09-12",
     telefon: "+41 79 789 01 23",
     email: "m.santos@example.com",
+    fruehererArbeitgeber: "ISS Facility Services AG",
     status: "AUSSTEHEND",
     notiz: "Sehr gründlich und zuverlässig, langjährige Unterhaltsreinigung.",
   },
