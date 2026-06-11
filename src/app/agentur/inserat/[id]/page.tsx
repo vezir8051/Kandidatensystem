@@ -2,11 +2,9 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { DemoBanner, Header, Footer, InseratBadge } from "@/components/ui";
 import { EinreichFormular } from "@/components/einreich-formular";
-import { getInserat, getFirma, inserate } from "@/lib/demo-data";
+import { getInserat, getFirma } from "@/lib/db";
 
-export function generateStaticParams() {
-  return inserate.map((i) => ({ id: i.id }));
-}
+export const dynamic = "force-dynamic";
 
 export default async function KandidatEinreichen({
   params,
@@ -14,9 +12,9 @@ export default async function KandidatEinreichen({
   params: Promise<{ id: string }>;
 }) {
   const { id } = await params;
-  const inserat = getInserat(id);
+  const inserat = await getInserat(id);
   if (!inserat) notFound();
-  const firma = getFirma(inserat.firmaId);
+  const firma = await getFirma(inserat.firmaId);
 
   return (
     <>
@@ -52,7 +50,11 @@ export default async function KandidatEinreichen({
           den am besten passenden aus Ihrem Pool.
         </div>
 
-        <EinreichFormular beruf={inserat.beruf} inseratTitel={inserat.titel} />
+        <EinreichFormular
+          inseratId={inserat.id}
+          beruf={inserat.beruf}
+          inseratTitel={inserat.titel}
+        />
       </main>
 
       <Footer />

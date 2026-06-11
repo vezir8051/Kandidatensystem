@@ -1,21 +1,26 @@
 import Link from "next/link";
 import { DemoBanner, Header, Footer, InseratBadge } from "@/components/ui";
 import { InseratErstellenButton } from "@/components/inserat-erstellen";
-import {
-  getFirma,
-  inserate,
-  getKandidatenFuerInserat,
-} from "@/lib/demo-data";
+import { getFirma, getInserate, countKandidatenFuerInserat } from "@/lib/db";
 
 // Demo: Wir sind als Firma "Müller Bau AG" (f1) eingeloggt.
 const AKTUELLE_FIRMA_ID = "f1";
 
-export default function FirmaDashboard() {
-  const firma = getFirma(AKTUELLE_FIRMA_ID)!;
+// Daten kommen jetzt zur Laufzeit aus der Datenbank.
+export const dynamic = "force-dynamic";
+
+export default async function FirmaDashboard() {
+  const firma = (await getFirma(AKTUELLE_FIRMA_ID))!;
+  const inserate = await getInserate();
   // Demo zeigt alle Inserate, damit die Ansicht voll wirkt – eigene zuerst.
   const eigeneInserate = inserate.filter((i) => i.firmaId === AKTUELLE_FIRMA_ID);
   const andereInserate = inserate.filter((i) => i.firmaId !== AKTUELLE_FIRMA_ID);
   const alleInserate = [...eigeneInserate, ...andereInserate];
+  const kandidatenZahlen = Object.fromEntries(
+    await Promise.all(
+      alleInserate.map(async (i) => [i.id, await countKandidatenFuerInserat(i.id)] as const),
+    ),
+  );
 
   return (
     <>
@@ -36,7 +41,7 @@ export default function FirmaDashboard() {
         <h2 className="text-lg font-semibold text-slate-900 mb-4">Ihre Inserate</h2>
         <div className="space-y-4">
           {alleInserate.map((inserat) => {
-            const anzahlKandidaten = getKandidatenFuerInserat(inserat.id).length;
+            const anzahlKandidaten = kandidatenZahlen[inserat.id] ?? 0;
             const istEigenes = inserat.firmaId === AKTUELLE_FIRMA_ID;
             return (
               <div

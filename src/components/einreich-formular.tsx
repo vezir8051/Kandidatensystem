@@ -1,15 +1,21 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
+import { useState, useTransition } from "react";
+import { useRouter } from "next/navigation";
+import { kandidatEinreichen } from "@/lib/actions";
 
 export function EinreichFormular({
+  inseratId,
   beruf,
   inseratTitel,
 }: {
+  inseratId: string;
   beruf: string;
   inseratTitel: string;
 }) {
+  const router = useRouter();
+  const [istAmSpeichern, startUebergang] = useTransition();
   const [abgeschickt, setAbgeschickt] = useState(false);
   const [vorname, setVorname] = useState("");
   const [nachname, setNachname] = useState("");
@@ -19,7 +25,7 @@ export function EinreichFormular({
   const [erreichbar, setErreichbar] = useState(false);
   const [fehler, setFehler] = useState<string | null>(null);
 
-  function absenden(e: React.FormEvent) {
+  function absenden(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     if (!vorname.trim() || !nachname.trim()) {
       setFehler("Bitte Vor- und Nachname ausfüllen.");
@@ -34,7 +40,30 @@ export function EinreichFormular({
       return;
     }
     setFehler(null);
-    setAbgeschickt(true);
+
+    const fd = new FormData(e.currentTarget);
+    const erfahrungRoh = (fd.get("erfahrungJahre") as string) || "";
+    startUebergang(async () => {
+      const res = await kandidatEinreichen({
+        inseratId,
+        vorname: vorname.trim(),
+        nachname: nachname.trim(),
+        beruf: ((fd.get("beruf") as string) || beruf).trim(),
+        erfahrungJahre: erfahrungRoh ? Number(erfahrungRoh) : 0,
+        qualifikationen: (fd.get("qualifikationen") as string) || "",
+        verfuegbarAb: (fd.get("verfuegbarAb") as string) || "",
+        verfuegbarBis,
+        telefon: (fd.get("telefon") as string) || "",
+        email: (fd.get("email") as string) || "",
+        notiz: (fd.get("notiz") as string) || "",
+      });
+      if (!res.ok) {
+        setFehler(res.fehler);
+        return;
+      }
+      setAbgeschickt(true);
+      router.refresh();
+    });
   }
 
   if (abgeschickt) {
@@ -72,6 +101,7 @@ export function EinreichFormular({
         <div>
           <label className="block text-sm font-medium text-slate-700 mb-1.5">Vorname *</label>
           <input
+            name="vorname"
             value={vorname}
             onChange={(e) => setVorname(e.target.value)}
             placeholder="z.B. Andreas"
@@ -81,6 +111,7 @@ export function EinreichFormular({
         <div>
           <label className="block text-sm font-medium text-slate-700 mb-1.5">Nachname *</label>
           <input
+            name="nachname"
             value={nachname}
             onChange={(e) => setNachname(e.target.value)}
             placeholder="z.B. Huber"
@@ -90,12 +121,12 @@ export function EinreichFormular({
       </div>
 
       <div className="grid sm:grid-cols-2 gap-4">
-        <Field label="Beruf" placeholder={beruf} />
-        <Field label="Jahre Erfahrung" placeholder="z.B. 8" type="number" />
+        <Field name="beruf" label="Beruf" placeholder={beruf} defaultValue={beruf} />
+        <Field name="erfahrungJahre" label="Jahre Erfahrung" placeholder="z.B. 8" type="number" />
       </div>
 
       <div className="grid sm:grid-cols-2 gap-4">
-        <Field label="Verfügbar ab" type="date" />
+        <Field name="verfuegbarAb" label="Verfügbar ab" type="date" />
         <div>
           <label className="block text-sm font-medium text-slate-700 mb-1.5">
             Verfügbar bis *
@@ -115,6 +146,7 @@ export function EinreichFormular({
       <div>
         <label className="block text-sm font-medium text-slate-700 mb-1.5">Qualifikationen</label>
         <input
+          name="qualifikationen"
           className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand-500"
           placeholder="z.B. EFZ Maler, Gerüstbau, Fahrausweis (mit Komma getrennt)"
         />
@@ -126,6 +158,7 @@ export function EinreichFormular({
             Telefon Kandidat
           </label>
           <input
+            name="telefon"
             type="tel"
             placeholder="z.B. +41 79 123 45 67"
             className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand-500"
@@ -136,6 +169,7 @@ export function EinreichFormular({
             E-Mail Kandidat
           </label>
           <input
+            name="email"
             type="email"
             placeholder="z.B. kandidat@example.com"
             className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand-500"
@@ -151,6 +185,7 @@ export function EinreichFormular({
           Notiz für die Firma
         </label>
         <textarea
+          name="notiz"
           rows={3}
           className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand-500"
           placeholder="Kurze Beschreibung, warum dieser Kandidat passt."
@@ -215,29 +250,36 @@ export function EinreichFormular({
 
       <button
         type="submit"
-        className="w-full px-5 py-3 rounded-lg bg-brand-600 text-white font-medium hover:bg-brand-700 transition-colors"
+        disabled={istAmSpeichern}
+        className="w-full px-5 py-3 rounded-lg bg-brand-600 text-white font-medium hover:bg-brand-700 transition-colors disabled:opacity-50"
       >
-        Kandidat einreichen
+        {istAmSpeichern ? "Wird eingereicht…" : "Kandidat einreichen"}
       </button>
     </form>
   );
 }
 
 function Field({
+  name,
   label,
   placeholder,
   type = "text",
+  defaultValue,
 }: {
+  name: string;
   label: string;
   placeholder?: string;
   type?: string;
+  defaultValue?: string;
 }) {
   return (
     <div>
       <label className="block text-sm font-medium text-slate-700 mb-1.5">{label}</label>
       <input
+        name={name}
         type={type}
         placeholder={placeholder}
+        defaultValue={defaultValue}
         className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand-500"
       />
     </div>

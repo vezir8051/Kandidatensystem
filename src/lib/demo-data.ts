@@ -1,65 +1,25 @@
-// Demo-Daten für TempMatch – statisch, ohne Datenbank.
-// In der MVP-Version werden diese durch echte Datenbank-Einträge (Prisma/PostgreSQL) ersetzt.
+// Seed-Daten für TempMatch.
+// Diese Arrays sind die Ausgangsdaten, mit denen die Datenbank befüllt wird
+// (siehe prisma/seed.ts). Zur Laufzeit liest die App aus der DB (src/lib/db.ts),
+// nicht mehr aus dieser Datei. Die Domänen-Typen stehen in src/lib/types.ts.
 
-export type Beruf =
-  | "Maler"
-  | "Schreiner"
-  | "Lagerist"
-  | "Koch"
-  | "Elektriker"
-  | "Reinigungskraft";
+import type {
+  Agentur,
+  Firma,
+  Inserat,
+  Kandidat,
+} from "@/lib/types";
 
-export type InseratStatus = "OFFEN" | "BESETZT" | "GESCHLOSSEN";
-export type KandidatStatus = "AUSSTEHEND" | "AUSGEWAEHLT" | "ABGELEHNT";
-
-export interface Firma {
-  id: string;
-  name: string;
-  branche: string;
-  ort: string;
-  kontaktperson: string;
-}
-
-export interface Agentur {
-  id: string;
-  name: string;
-  ort: string;
-  kontaktperson: string;
-  aboAktiv: boolean;
-}
-
-export interface Kandidat {
-  id: string;
-  inseratId: string;
-  agenturId: string;
-  vorname: string;
-  nachname: string;
-  beruf: Beruf;
-  erfahrungJahre: number;
-  qualifikationen: string[];
-  verfuegbarAb: string;
-  verfuegbarBis?: string;
-  telefon?: string;
-  email?: string;
-  fruehererArbeitgeber?: string;
-  status: KandidatStatus;
-  notiz: string;
-}
-
-export interface Inserat {
-  id: string;
-  firmaId: string;
-  titel: string;
-  beruf: Beruf;
-  beschreibung: string;
-  anforderungen: string[];
-  ort: string;
-  startDatum: string;
-  dauer: string;
-  festanstellungMoeglich?: boolean;
-  status: InseratStatus;
-  erstelltAm: string;
-}
+// Re-Export für Komponenten, die ihre Typen historisch von hier importieren.
+export type {
+  Agentur,
+  Beruf,
+  Firma,
+  Inserat,
+  InseratStatus,
+  Kandidat,
+  KandidatStatus,
+} from "@/lib/types";
 
 export const firmen: Firma[] = [
   {
@@ -302,33 +262,3 @@ export const kandidaten: Kandidat[] = [
     notiz: "Sehr gründlich und zuverlässig, langjährige Unterhaltsreinigung.",
   },
 ];
-
-// --- Hilfsfunktionen ---
-
-export function getFirma(id: string): Firma | undefined {
-  return firmen.find((f) => f.id === id);
-}
-
-export function getAgentur(id: string): Agentur | undefined {
-  return agenturen.find((a) => a.id === id);
-}
-
-export function getInserat(id: string): Inserat | undefined {
-  return inserate.find((i) => i.id === id);
-}
-
-export function getInserateVonFirma(firmaId: string): Inserat[] {
-  return inserate.filter((i) => i.firmaId === firmaId);
-}
-
-export function getKandidatenFuerInserat(inseratId: string): Kandidat[] {
-  return kandidaten.filter((k) => k.inseratId === inseratId);
-}
-
-export function getKandidatenVonAgentur(agenturId: string): Kandidat[] {
-  return kandidaten.filter((k) => k.agenturId === agenturId);
-}
-
-export function getEingereichtVonAgentur(agenturId: string, inseratId: string): Kandidat | undefined {
-  return kandidaten.find((k) => k.agenturId === agenturId && k.inseratId === inseratId);
-}

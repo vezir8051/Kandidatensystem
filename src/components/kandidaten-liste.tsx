@@ -1,7 +1,9 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useTransition } from "react";
+import { useRouter } from "next/navigation";
 import { KandidatBadge } from "@/components/ui";
+import { kandidatAuswaehlen, kandidatAblehnen } from "@/lib/actions";
 import type { Kandidat, KandidatStatus, Agentur } from "@/lib/demo-data";
 
 function formatDatum(iso: string): string {
@@ -23,6 +25,8 @@ export function KandidatenListe({
   kandidaten: Kandidat[];
   agenturen: Record<string, Agentur | undefined>;
 }) {
+  const router = useRouter();
+  const [istAmSpeichern, startUebergang] = useTransition();
   const [stati, setStati] = useState<Record<string, KandidatStatus>>(
     Object.fromEntries(kandidaten.map((k) => [k.id, k.status])),
   );
@@ -32,6 +36,7 @@ export function KandidatenListe({
   const ausgewaehlteId = Object.entries(stati).find(([, s]) => s === "AUSGEWAEHLT")?.[0] ?? null;
 
   function auswaehlen(k: Kandidat) {
+    // Optimistisches UI-Update; danach in der Datenbank persistieren.
     setStati((prev) => {
       const next: Record<string, KandidatStatus> = { ...prev };
       for (const kand of kandidaten) {
@@ -42,11 +47,21 @@ export function KandidatenListe({
     setMeldung(
       `✓ ${k.vorname} ${k.nachname} wurde ausgewählt. Die Agentur wurde benachrichtigt.`,
     );
+    startUebergang(async () => {
+      const res = await kandidatAuswaehlen(k.id);
+      if (!res.ok) setMeldung(res.fehler);
+      router.refresh();
+    });
   }
 
   function ablehnen(k: Kandidat) {
     setStati((prev) => ({ ...prev, [k.id]: "ABGELEHNT" }));
     setMeldung(`${k.vorname} ${k.nachname} wurde nicht berücksichtigt.`);
+    startUebergang(async () => {
+      const res = await kandidatAblehnen(k.id);
+      if (!res.ok) setMeldung(res.fehler);
+      router.refresh();
+    });
   }
 
   function melden(k: Kandidat) {
@@ -134,13 +149,15 @@ export function KandidatenListe({
                     <>
                       <button
                         onClick={() => auswaehlen(k)}
-                        className="px-4 py-2 rounded-lg bg-brand-600 text-white text-sm font-medium hover:bg-brand-700 transition-colors"
+                        disabled={istAmSpeichern}
+                        className="px-4 py-2 rounded-lg bg-brand-600 text-white text-sm font-medium hover:bg-brand-700 transition-colors disabled:opacity-50"
                       >
                         Auswählen
                       </button>
                       <button
                         onClick={() => ablehnen(k)}
-                        className="px-4 py-2 rounded-lg bg-slate-100 text-slate-600 text-sm font-medium hover:bg-slate-200 transition"
+                        disabled={istAmSpeichern}
+                        className="px-4 py-2 rounded-lg bg-slate-100 text-slate-600 text-sm font-medium hover:bg-slate-200 transition disabled:opacity-50"
                       >
                         Ablehnen
                       </button>
