@@ -3,7 +3,12 @@ import { getAgenturen, getInserate, getFirmen, getKandidaten } from "@/lib/db";
 
 export const dynamic = "force-dynamic";
 
-export default async function AgenturPage() {
+export default async function AgenturPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ beruf?: string; ort?: string }>;
+}) {
+  const { beruf, ort } = await searchParams;
   const [agenturen, inserate, firmen, kandidaten] = await Promise.all([
     getAgenturen(),
     getInserate(),
@@ -30,6 +35,8 @@ export default async function AgenturPage() {
       firmaName={firmaName}
       firmaBranche={firmaBranche}
       eingereicht={eingereicht}
+      initialBeruf={beruf ?? ""}
+      initialOrt={ort ?? ""}
     />
   );
 }

@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useMemo, useState } from "react";
 import { DemoBanner, Header, Footer, InseratBadge } from "@/components/ui";
+import { KANTONE, BERUF_VORSCHLAEGE } from "@/lib/kantone";
 import type { Agentur, Inserat } from "@/lib/types";
 
 type Eingereicht = {
@@ -26,33 +27,44 @@ export function AgenturDashboard({
   firmaName,
   firmaBranche,
   eingereicht,
+  initialBeruf = "",
+  initialOrt = "",
 }: {
   agenturen: Agentur[];
   offeneInserate: Inserat[];
   firmaName: Record<string, string>;
   firmaBranche: Record<string, string>;
   eingereicht: Eingereicht[];
+  initialBeruf?: string;
+  initialOrt?: string;
 }) {
   const [agenturId, setAgenturId] = useState(agenturen[0]?.id ?? "");
-  const [berufFilter, setBerufFilter] = useState("");
-  const [ortFilter, setOrtFilter] = useState("");
+  const [berufFilter, setBerufFilter] = useState(initialBeruf);
+  const [ortFilter, setOrtFilter] = useState(initialOrt);
 
   const agentur = agenturen.find((a) => a.id === agenturId) ?? agenturen[0];
 
-  // Filterwerte aus den offenen Inseraten ableiten.
-  const berufe = useMemo(
-    () => Array.from(new Set(offeneInserate.map((i) => i.beruf))).sort(),
+  // Vorschlagslisten: Berufe/Orte aus den Inseraten + alle Kantone.
+  const berufVorschlaege = useMemo(
+    () =>
+      Array.from(
+        new Set([...offeneInserate.map((i) => i.beruf), ...BERUF_VORSCHLAEGE]),
+      ).sort(),
     [offeneInserate],
   );
-  const orte = useMemo(
-    () => Array.from(new Set(offeneInserate.map((i) => i.ort))).sort(),
+  const ortVorschlaege = useMemo(
+    () =>
+      Array.from(new Set([...offeneInserate.map((i) => i.ort), ...KANTONE])).sort(),
     [offeneInserate],
   );
 
+  // Tolerantes Filtern: Teilstring, Gross-/Kleinschreibung egal.
+  const berufQuery = berufFilter.trim().toLowerCase();
+  const ortQuery = ortFilter.trim().toLowerCase();
   const gefiltert = offeneInserate.filter(
     (i) =>
-      (berufFilter === "" || i.beruf === berufFilter) &&
-      (ortFilter === "" || i.ort === ortFilter),
+      (berufQuery === "" || i.beruf.toLowerCase().includes(berufQuery)) &&
+      (ortQuery === "" || i.ort.toLowerCase().includes(ortQuery)),
   );
 
   function eingereichtFuer(inseratId: string): Eingereicht | undefined {
@@ -119,33 +131,33 @@ export function AgenturDashboard({
         <div className="flex flex-wrap items-end gap-3 mb-4">
           <div>
             <label className="block text-xs text-slate-500 mb-1">Beruf</label>
-            <select
+            <input
+              list="agentur-berufe"
               value={berufFilter}
               onChange={(e) => setBerufFilter(e.target.value)}
+              placeholder="Alle Berufe"
               className="rounded-lg border border-slate-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand-500"
-            >
-              <option value="">Alle Berufe</option>
-              {berufe.map((b) => (
-                <option key={b} value={b}>
-                  {b}
-                </option>
+            />
+            <datalist id="agentur-berufe">
+              {berufVorschlaege.map((b) => (
+                <option key={b} value={b} />
               ))}
-            </select>
+            </datalist>
           </div>
           <div>
-            <label className="block text-xs text-slate-500 mb-1">Ort</label>
-            <select
+            <label className="block text-xs text-slate-500 mb-1">Ort / Kanton</label>
+            <input
+              list="agentur-orte"
               value={ortFilter}
               onChange={(e) => setOrtFilter(e.target.value)}
+              placeholder="Ganze Schweiz"
               className="rounded-lg border border-slate-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand-500"
-            >
-              <option value="">Alle Orte</option>
-              {orte.map((o) => (
-                <option key={o} value={o}>
-                  {o}
-                </option>
+            />
+            <datalist id="agentur-orte">
+              {ortVorschlaege.map((o) => (
+                <option key={o} value={o} />
               ))}
-            </select>
+            </datalist>
           </div>
           {(berufFilter || ortFilter) && (
             <button
