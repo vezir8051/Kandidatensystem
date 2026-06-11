@@ -1,14 +1,30 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useTransition } from "react";
+import { leadSpeichern } from "@/lib/actions";
 
-// Demo-Lead-Formular für die Frühbucher-Warteliste.
-// Speichert nichts – zeigt nach Absenden eine Bestätigung.
+// Lead-Formular für die Frühbucher-Warteliste.
+// Speichert den Eintrag in der Datenbank (Lead-Tabelle).
 export function LeadFormular() {
+  const [istAmSpeichern, startUebergang] = useTransition();
   const [gesendet, setGesendet] = useState(false);
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [rolle, setRolle] = useState("Firma");
+  const [fehler, setFehler] = useState<string | null>(null);
+
+  function absenden(e: React.FormEvent) {
+    e.preventDefault();
+    setFehler(null);
+    startUebergang(async () => {
+      const res = await leadSpeichern({ name: name.trim(), email: email.trim(), rolle });
+      if (!res.ok) {
+        setFehler(res.fehler);
+        return;
+      }
+      setGesendet(true);
+    });
+  }
 
   if (gesendet) {
     return (
@@ -24,10 +40,7 @@ export function LeadFormular() {
 
   return (
     <form
-      onSubmit={(e) => {
-        e.preventDefault();
-        setGesendet(true);
-      }}
+      onSubmit={absenden}
       className="bg-white/10 backdrop-blur rounded-2xl p-6 max-w-md mx-auto space-y-3"
     >
       <input
@@ -50,14 +63,18 @@ export function LeadFormular() {
         onChange={(e) => setRolle(e.target.value)}
         className="w-full rounded-lg border border-white/30 bg-white/90 px-4 py-3 text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-white"
       >
-        <option>Ich bin eine Firma</option>
-        <option>Ich bin ein Vermittlungsbüro</option>
+        <option value="Firma">Ich bin eine Firma</option>
+        <option value="Vermittlungsbüro">Ich bin ein Vermittlungsbüro</option>
       </select>
+      {fehler && (
+        <p className="text-sm text-white bg-red-500/80 rounded-lg px-3 py-2">{fehler}</p>
+      )}
       <button
         type="submit"
-        className="w-full px-5 py-3 rounded-lg bg-white text-brand-700 font-semibold hover:bg-brand-50 transition"
+        disabled={istAmSpeichern}
+        className="w-full px-5 py-3 rounded-lg bg-white text-brand-700 font-semibold hover:bg-brand-50 transition disabled:opacity-60"
       >
-        Auf die Frühbucher-Liste
+        {istAmSpeichern ? "Wird gespeichert…" : "Auf die Frühbucher-Liste"}
       </button>
     </form>
   );

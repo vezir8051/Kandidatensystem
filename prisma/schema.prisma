@@ -51,22 +51,36 @@ model Inserat {
 }
 
 model Kandidat {
-  id                   String   @id @default(cuid())
-  inserat              Inserat  @relation(fields: [inseratId], references: [id])
+  id                   String    @id @default(cuid())
+  inserat              Inserat   @relation(fields: [inseratId], references: [id])
   inseratId            String
-  agentur              Agentur  @relation(fields: [agenturId], references: [id])
+  agentur              Agentur   @relation(fields: [agenturId], references: [id])
   agenturId            String
   vorname              String
   nachname             String
   beruf                String
   erfahrungJahre       Int
-  qualifikationen      String   @default("[]") // JSON-Array von Strings
+  qualifikationen      String    @default("[]") // JSON-Array von Strings
   verfuegbarAb         String
   verfuegbarBis        String?
   telefon              String?
   email                String?
   fruehererArbeitgeber String?
-  status               String   @default("AUSSTEHEND")
+  status               String    @default("AUSSTEHEND")
   notiz                String
-  createdAt            DateTime @default(now())
+  // Pflichtbestätigungen bei der Einreichung (nDSG-Audit).
+  consentNdsg          Boolean   @default(false)
+  consentWahrheit      Boolean   @default(false)
+  consentErreichbar    Boolean   @default(false)
+  consentAm            DateTime?
+  createdAt            DateTime  @default(now())
+}
+
+// Frühbucher-/Warteliste von der Startseite (Lead-Formular).
+model Lead {
+  id        String   @id @default(cuid())
+  name      String
+  email     String
+  rolle     String // "Firma" oder "Vermittlungsbüro"
+  createdAt DateTime @default(now())
 }

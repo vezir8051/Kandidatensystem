@@ -33,6 +33,9 @@ export function InseratErstellenButton() {
         beruf: (fd.get("beruf") as string) || "Maler",
         ort: (fd.get("ort") as string) || "",
         beschreibung: (fd.get("beschreibung") as string) || "",
+        anforderungen: (fd.get("anforderungen") as string) || "",
+        startDatum: (fd.get("startDatum") as string) || "",
+        dauer: (fd.get("dauer") as string) || "",
         festanstellungMoeglich: festanstellung,
       });
       if (!res.ok) {
@@ -135,6 +138,38 @@ export function InseratErstellenButton() {
                     placeholder="Beschreiben Sie die Tätigkeit und die Anforderungen."
                     className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand-500"
                   />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-slate-700 mb-1.5">
+                    Anforderungen
+                  </label>
+                  <input
+                    name="anforderungen"
+                    placeholder="z.B. EFZ Maler, Gerüstbau, Fahrausweis (mit Komma getrennt)"
+                    className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand-500"
+                  />
+                </div>
+
+                <div className="grid sm:grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-sm font-medium text-slate-700 mb-1.5">
+                      Startdatum
+                    </label>
+                    <input
+                      name="startDatum"
+                      type="date"
+                      className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand-500"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-slate-700 mb-1.5">Dauer</label>
+                    <input
+                      name="dauer"
+                      placeholder="z.B. 3 Monate, befristet"
+                      className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand-500"
+                    />
+                  </div>
                 </div>
 
                 <label className="flex items-start gap-2 text-sm text-slate-600 cursor-pointer">

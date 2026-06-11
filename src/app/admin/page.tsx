@@ -4,6 +4,7 @@ import {
   getAgenturen,
   getInserate,
   getKandidaten,
+  getLeads,
   countKandidatenFuerInserat,
 } from "@/lib/db";
 
@@ -14,11 +15,12 @@ export const metadata = {
 export const dynamic = "force-dynamic";
 
 export default async function AdminDashboard() {
-  const [firmen, agenturen, inserate, kandidaten] = await Promise.all([
+  const [firmen, agenturen, inserate, kandidaten, leads] = await Promise.all([
     getFirmen(),
     getAgenturen(),
     getInserate(),
     getKandidaten(),
+    getLeads(),
   ]);
   const firmaName = Object.fromEntries(firmen.map((f) => [f.id, f.name]));
   const kandidatenZahlen = Object.fromEntries(
@@ -33,6 +35,7 @@ export default async function AdminDashboard() {
     { label: "Agenturen", wert: agenturen.length },
     { label: "Inserate (offen)", wert: offene },
     { label: "Kandidaten", wert: kandidaten.length },
+    { label: "Frühbucher-Leads", wert: leads.length },
   ];
 
   return (
@@ -44,7 +47,7 @@ export default async function AdminDashboard() {
         <h1 className="text-2xl font-bold text-slate-900 mb-6">Admin-Übersicht</h1>
 
         {/* Kennzahlen */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-10">
+        <div className="grid grid-cols-2 md:grid-cols-5 gap-4 mb-10">
           {kennzahlen.map((k) => (
             <div key={k.label} className="bg-white rounded-2xl border border-slate-200 p-5 shadow-soft">
               <div className="tabular text-3xl font-bold text-ink">
@@ -120,6 +123,37 @@ export default async function AdminDashboard() {
             </tbody>
           </table>
         </div>
+
+        {/* Frühbucher-Leads */}
+        <h2 className="text-lg font-semibold text-slate-900 mb-3 mt-10">Frühbucher-Liste</h2>
+        {leads.length === 0 ? (
+          <div className="bg-white rounded-2xl border border-dashed border-slate-300 p-8 text-center text-sm text-slate-500">
+            Noch keine Einträge. Anmeldungen über das Formular auf der Startseite erscheinen hier.
+          </div>
+        ) : (
+          <div className="bg-white rounded-2xl border border-slate-100 shadow-soft overflow-hidden">
+            <table className="w-full text-sm">
+              <thead className="bg-slate-50 text-slate-500 text-left">
+                <tr>
+                  <th className="px-4 py-3 font-medium">Name</th>
+                  <th className="px-4 py-3 font-medium">E-Mail</th>
+                  <th className="px-4 py-3 font-medium">Rolle</th>
+                  <th className="px-4 py-3 font-medium">Eingetragen</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-slate-100">
+                {leads.map((l) => (
+                  <tr key={l.id} className="hover:bg-slate-50">
+                    <td className="px-4 py-3 text-slate-800">{l.name}</td>
+                    <td className="px-4 py-3 text-slate-600">{l.email}</td>
+                    <td className="px-4 py-3 text-slate-600">{l.rolle}</td>
+                    <td className="px-4 py-3 text-slate-600">{l.erstelltAm}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        )}
       </main>
 
       <Footer />
