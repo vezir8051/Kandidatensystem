@@ -55,7 +55,11 @@ export function EinreichFormular({
         verfuegbarBis,
         telefon: (fd.get("telefon") as string) || "",
         email: (fd.get("email") as string) || "",
+        fruehererArbeitgeber: (fd.get("fruehererArbeitgeber") as string) || "",
         notiz: (fd.get("notiz") as string) || "",
+        consentNdsg: einverstaendnis,
+        consentWahrheit: wahrheit,
+        consentErreichbar: erreichbar,
       });
       if (!res.ok) {
         setFehler(res.fehler);
@@ -149,6 +153,17 @@ export function EinreichFormular({
           name="qualifikationen"
           className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand-500"
           placeholder="z.B. EFZ Maler, Gerüstbau, Fahrausweis (mit Komma getrennt)"
+        />
+      </div>
+
+      <div>
+        <label className="block text-sm font-medium text-slate-700 mb-1.5">
+          Früherer Arbeitgeber
+        </label>
+        <input
+          name="fruehererArbeitgeber"
+          className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand-500"
+          placeholder="z.B. Malerei Muster AG, Zürich"
         />
       </div>
 

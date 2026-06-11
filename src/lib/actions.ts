@@ -74,12 +74,21 @@ export async function kandidatEinreichen(input: {
   verfuegbarBis?: string;
   telefon?: string;
   email?: string;
+  fruehererArbeitgeber?: string;
   notiz?: string;
+  consentNdsg?: boolean;
+  consentWahrheit?: boolean;
+  consentErreichbar?: boolean;
 }): Promise<ActionResult> {
   const vorname = input.vorname?.trim();
   const nachname = input.nachname?.trim();
   if (!vorname || !nachname) {
     return { ok: false, fehler: "Bitte Vor- und Nachname angeben." };
+  }
+
+  // Pflichtbestätigungen müssen serverseitig vorliegen (nicht nur im UI).
+  if (!input.consentNdsg || !input.consentWahrheit || !input.consentErreichbar) {
+    return { ok: false, fehler: "Bitte alle drei Pflichtbestätigungen ankreuzen." };
   }
 
   const inserat = await prisma.inserat.findUnique({ where: { id: input.inseratId } });
@@ -112,8 +121,13 @@ export async function kandidatEinreichen(input: {
       verfuegbarBis: input.verfuegbarBis?.trim() || null,
       telefon: input.telefon?.trim() || null,
       email: input.email?.trim() || null,
+      fruehererArbeitgeber: input.fruehererArbeitgeber?.trim() || null,
       status: "AUSSTEHEND",
       notiz: input.notiz?.trim() || "",
+      consentNdsg: true,
+      consentWahrheit: true,
+      consentErreichbar: true,
+      consentAm: new Date(),
     },
   });
 
@@ -163,5 +177,31 @@ export async function kandidatAblehnen(kandidatId: string): Promise<ActionResult
   });
 
   revalidatePath(`/firma/inserat/${kandidat.inseratId}`);
+  return { ok: true };
+}
+
+// --- Startseite: Frühbucher-Lead speichern ---
+
+export async function leadSpeichern(input: {
+  name: string;
+  email: string;
+  rolle: string;
+}): Promise<ActionResult> {
+  const name = input.name?.trim();
+  const email = input.email?.trim();
+  if (!name) return { ok: false, fehler: "Bitte einen Namen angeben." };
+  if (!email || !email.includes("@")) {
+    return { ok: false, fehler: "Bitte eine gültige E-Mail-Adresse angeben." };
+  }
+
+  await prisma.lead.create({
+    data: {
+      name,
+      email,
+      rolle: input.rolle?.trim() || "Firma",
+    },
+  });
+
+  revalidatePath("/admin");
   return { ok: true };
 }

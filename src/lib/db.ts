@@ -11,6 +11,7 @@ import type {
   InseratStatus,
   Kandidat,
   KandidatStatus,
+  Lead,
 } from "@/lib/types";
 
 function parseListe(json: string): string[] {
@@ -150,4 +151,15 @@ export async function getEingereichtVonAgentur(
 // Kennzahl für das Firmen-/Admin-Dashboard, ohne alle Kandidaten zu laden.
 export async function countKandidatenFuerInserat(inseratId: string): Promise<number> {
   return prisma.kandidat.count({ where: { inseratId } });
+}
+
+export async function getLeads(): Promise<Lead[]> {
+  const rows = await prisma.lead.findMany({ orderBy: { createdAt: "desc" } });
+  return rows.map((r) => ({
+    id: r.id,
+    name: r.name,
+    email: r.email,
+    rolle: r.rolle,
+    erstelltAm: r.createdAt.toISOString().slice(0, 10),
+  }));
 }

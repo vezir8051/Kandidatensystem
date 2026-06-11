@@ -47,6 +47,14 @@ export interface Kandidat {
   notiz: string;
 }
 
+export interface Lead {
+  id: string;
+  name: string;
+  email: string;
+  rolle: string;
+  erstelltAm: string;
+}
+
 export interface Inserat {
   id: string;
   firmaId: string;
