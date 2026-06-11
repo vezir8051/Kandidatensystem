@@ -1,20 +1,47 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useTransition } from "react";
+import { useRouter } from "next/navigation";
+import { inseratErstellen } from "@/lib/actions";
 
-// Demo: "Neues Inserat erstellen" öffnet ein Modal-Formular.
-// Nach Absenden erscheint eine Bestätigung (kein echtes Backend).
+// "Neues Inserat erstellen" öffnet ein Modal-Formular und legt das Inserat
+// nach dem Absenden in der Datenbank an.
 export function InseratErstellenButton() {
+  const router = useRouter();
+  const [istAmSpeichern, startUebergang] = useTransition();
   const [offen, setOffen] = useState(false);
   const [fertig, setFertig] = useState(false);
   const [titel, setTitel] = useState("");
   const [festanstellung, setFestanstellung] = useState(false);
+  const [fehler, setFehler] = useState<string | null>(null);
 
   function schliessen() {
     setOffen(false);
     setFertig(false);
     setTitel("");
     setFestanstellung(false);
+    setFehler(null);
+  }
+
+  function absenden(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    setFehler(null);
+    const fd = new FormData(e.currentTarget);
+    startUebergang(async () => {
+      const res = await inseratErstellen({
+        titel: titel.trim(),
+        beruf: (fd.get("beruf") as string) || "Maler",
+        ort: (fd.get("ort") as string) || "",
+        beschreibung: (fd.get("beschreibung") as string) || "",
+        festanstellungMoeglich: festanstellung,
+      });
+      if (!res.ok) {
+        setFehler(res.fehler);
+        return;
+      }
+      setFertig(true);
+      router.refresh();
+    });
   }
 
   return (
@@ -47,13 +74,7 @@ export function InseratErstellenButton() {
                 </button>
               </div>
             ) : (
-              <form
-                onSubmit={(e) => {
-                  e.preventDefault();
-                  setFertig(true);
-                }}
-                className="space-y-4"
-              >
+              <form onSubmit={absenden} className="space-y-4">
                 <div className="flex items-center justify-between">
                   <h3 className="text-lg font-bold text-slate-900">Neues Inserat</h3>
                   <button
@@ -82,7 +103,10 @@ export function InseratErstellenButton() {
                 <div className="grid sm:grid-cols-2 gap-4">
                   <div>
                     <label className="block text-sm font-medium text-slate-700 mb-1.5">Beruf</label>
-                    <select className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand-500">
+                    <select
+                      name="beruf"
+                      className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand-500"
+                    >
                       <option>Maler</option>
                       <option>Schreiner</option>
                       <option>Lagerist</option>
@@ -94,6 +118,7 @@ export function InseratErstellenButton() {
                   <div>
                     <label className="block text-sm font-medium text-slate-700 mb-1.5">Ort</label>
                     <input
+                      name="ort"
                       placeholder="z.B. Zürich"
                       className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand-500"
                     />
@@ -105,6 +130,7 @@ export function InseratErstellenButton() {
                     Beschreibung
                   </label>
                   <textarea
+                    name="beschreibung"
                     rows={3}
                     placeholder="Beschreiben Sie die Tätigkeit und die Anforderungen."
                     className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand-500"
@@ -128,11 +154,18 @@ export function InseratErstellenButton() {
                   Sie erhalten vorher eine Erinnerung.
                 </p>
 
+                {fehler && (
+                  <p className="text-sm text-red-600 bg-red-50 border border-red-200 rounded-lg px-3 py-2">
+                    {fehler}
+                  </p>
+                )}
+
                 <button
                   type="submit"
-                  className="w-full px-5 py-3 rounded-lg bg-brand-600 text-white font-medium hover:bg-brand-700 transition"
+                  disabled={istAmSpeichern}
+                  className="w-full px-5 py-3 rounded-lg bg-brand-600 text-white font-medium hover:bg-brand-700 transition disabled:opacity-50"
                 >
-                  Inserat veröffentlichen
+                  {istAmSpeichern ? "Wird veröffentlicht…" : "Inserat veröffentlichen"}
                 </button>
               </form>
             )}

@@ -1,18 +1,31 @@
 import { DemoBanner, Header, Footer, InseratBadge } from "@/components/ui";
 import {
-  firmen,
-  agenturen,
-  inserate,
-  kandidaten,
-  getFirma,
-  getKandidatenFuerInserat,
-} from "@/lib/demo-data";
+  getFirmen,
+  getAgenturen,
+  getInserate,
+  getKandidaten,
+  countKandidatenFuerInserat,
+} from "@/lib/db";
 
 export const metadata = {
   title: "Admin – TempMatch",
 };
 
-export default function AdminDashboard() {
+export const dynamic = "force-dynamic";
+
+export default async function AdminDashboard() {
+  const [firmen, agenturen, inserate, kandidaten] = await Promise.all([
+    getFirmen(),
+    getAgenturen(),
+    getInserate(),
+    getKandidaten(),
+  ]);
+  const firmaName = Object.fromEntries(firmen.map((f) => [f.id, f.name]));
+  const kandidatenZahlen = Object.fromEntries(
+    await Promise.all(
+      inserate.map(async (i) => [i.id, await countKandidatenFuerInserat(i.id)] as const),
+    ),
+  );
   const offene = inserate.filter((i) => i.status === "OFFEN").length;
 
   const kennzahlen = [
@@ -59,10 +72,10 @@ export default function AdminDashboard() {
               {inserate.map((i) => (
                 <tr key={i.id} className="hover:bg-slate-50">
                   <td className="px-4 py-3 text-slate-800">{i.titel}</td>
-                  <td className="px-4 py-3 text-slate-600">{getFirma(i.firmaId)?.name}</td>
+                  <td className="px-4 py-3 text-slate-600">{firmaName[i.firmaId]}</td>
                   <td className="px-4 py-3 text-slate-600">{i.ort}</td>
                   <td className="px-4 py-3 text-center text-slate-800 font-medium">
-                    {getKandidatenFuerInserat(i.id).length}
+                    {kandidatenZahlen[i.id] ?? 0}
                   </td>
                   <td className="px-4 py-3">
                     <InseratBadge status={i.status} />

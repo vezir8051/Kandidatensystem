@@ -1,0 +1,167 @@
+"use server";
+
+// Server Actions: echte Schreibvorgänge gegen die Datenbank.
+// Werden direkt aus den (Client-)Formularen aufgerufen.
+
+import { revalidatePath } from "next/cache";
+import { prisma } from "@/lib/prisma";
+
+export type ActionResult = { ok: true } | { ok: false; fehler: string };
+
+function listeAusText(text: string): string {
+  const items = text
+    .split(",")
+    .map((s) => s.trim())
+    .filter(Boolean);
+  return JSON.stringify(items);
+}
+
+// --- Firma: neues Inserat erstellen ---
+
+export async function inseratErstellen(input: {
+  firmaId?: string;
+  titel: string;
+  beruf: string;
+  ort: string;
+  beschreibung: string;
+  anforderungen?: string;
+  startDatum?: string;
+  dauer?: string;
+  festanstellungMoeglich?: boolean;
+}): Promise<ActionResult> {
+  const titel = input.titel?.trim();
+  if (!titel) return { ok: false, fehler: "Bitte einen Titel angeben." };
+
+  // Demo: ohne Auth wird das Inserat der ersten Firma zugeordnet.
+  const firma = input.firmaId
+    ? await prisma.firma.findUnique({ where: { id: input.firmaId } })
+    : await prisma.firma.findFirst({ orderBy: { createdAt: "asc" } });
+  if (!firma) return { ok: false, fehler: "Keine Firma gefunden." };
+
+  await prisma.inserat.create({
+    data: {
+      firmaId: firma.id,
+      titel,
+      beruf: input.beruf?.trim() || "Maler",
+      ort: input.ort?.trim() || firma.ort,
+      beschreibung: input.beschreibung?.trim() || "",
+      anforderungen: listeAusText(input.anforderungen ?? ""),
+      startDatum: input.startDatum?.trim() || new Date().toISOString().slice(0, 10),
+      dauer: input.dauer?.trim() || "Temporär",
+      festanstellungMoeglich: Boolean(input.festanstellungMoeglich),
+      status: "OFFEN",
+      erstelltAm: new Date().toISOString().slice(0, 10),
+    },
+  });
+
+  revalidatePath("/firma");
+  revalidatePath("/agentur");
+  revalidatePath("/admin");
+  return { ok: true };
+}
+
+// --- Agentur: Kandidat für ein Inserat einreichen ---
+
+export async function kandidatEinreichen(input: {
+  inseratId: string;
+  agenturId?: string;
+  vorname: string;
+  nachname: string;
+  beruf?: string;
+  erfahrungJahre?: number;
+  qualifikationen?: string;
+  verfuegbarAb?: string;
+  verfuegbarBis?: string;
+  telefon?: string;
+  email?: string;
+  notiz?: string;
+}): Promise<ActionResult> {
+  const vorname = input.vorname?.trim();
+  const nachname = input.nachname?.trim();
+  if (!vorname || !nachname) {
+    return { ok: false, fehler: "Bitte Vor- und Nachname angeben." };
+  }
+
+  const inserat = await prisma.inserat.findUnique({ where: { id: input.inseratId } });
+  if (!inserat) return { ok: false, fehler: "Inserat nicht gefunden." };
+
+  // Demo: ohne Auth wird die erste Agentur als einreichende Agentur verwendet.
+  const agentur = input.agenturId
+    ? await prisma.agentur.findUnique({ where: { id: input.agenturId } })
+    : await prisma.agentur.findFirst({ orderBy: { createdAt: "asc" } });
+  if (!agentur) return { ok: false, fehler: "Keine Agentur gefunden." };
+
+  // Regel: genau ein Kandidat pro Agentur pro Inserat.
+  const schonEingereicht = await prisma.kandidat.findFirst({
+    where: { inseratId: inserat.id, agenturId: agentur.id },
+  });
+  if (schonEingereicht) {
+    return { ok: false, fehler: "Sie haben für dieses Inserat bereits einen Kandidaten eingereicht." };
+  }
+
+  await prisma.kandidat.create({
+    data: {
+      inseratId: inserat.id,
+      agenturId: agentur.id,
+      vorname,
+      nachname,
+      beruf: input.beruf?.trim() || inserat.beruf,
+      erfahrungJahre: Number.isFinite(input.erfahrungJahre) ? Number(input.erfahrungJahre) : 0,
+      qualifikationen: listeAusText(input.qualifikationen ?? ""),
+      verfuegbarAb: input.verfuegbarAb?.trim() || inserat.startDatum,
+      verfuegbarBis: input.verfuegbarBis?.trim() || null,
+      telefon: input.telefon?.trim() || null,
+      email: input.email?.trim() || null,
+      status: "AUSSTEHEND",
+      notiz: input.notiz?.trim() || "",
+    },
+  });
+
+  revalidatePath(`/firma/inserat/${inserat.id}`);
+  revalidatePath("/agentur");
+  revalidatePath("/admin");
+  return { ok: true };
+}
+
+// --- Firma: Kandidat auswählen (alle anderen für dieses Inserat ablehnen) ---
+
+export async function kandidatAuswaehlen(kandidatId: string): Promise<ActionResult> {
+  const kandidat = await prisma.kandidat.findUnique({ where: { id: kandidatId } });
+  if (!kandidat) return { ok: false, fehler: "Kandidat nicht gefunden." };
+
+  await prisma.$transaction([
+    prisma.kandidat.updateMany({
+      where: { inseratId: kandidat.inseratId, id: { not: kandidatId } },
+      data: { status: "ABGELEHNT" },
+    }),
+    prisma.kandidat.update({
+      where: { id: kandidatId },
+      data: { status: "AUSGEWAEHLT" },
+    }),
+    prisma.inserat.update({
+      where: { id: kandidat.inseratId },
+      data: { status: "BESETZT" },
+    }),
+  ]);
+
+  revalidatePath(`/firma/inserat/${kandidat.inseratId}`);
+  revalidatePath("/firma");
+  revalidatePath("/agentur");
+  revalidatePath("/admin");
+  return { ok: true };
+}
+
+// --- Firma: einzelnen Kandidaten ablehnen ---
+
+export async function kandidatAblehnen(kandidatId: string): Promise<ActionResult> {
+  const kandidat = await prisma.kandidat.findUnique({ where: { id: kandidatId } });
+  if (!kandidat) return { ok: false, fehler: "Kandidat nicht gefunden." };
+
+  await prisma.kandidat.update({
+    where: { id: kandidatId },
+    data: { status: "ABGELEHNT" },
+  });
+
+  revalidatePath(`/firma/inserat/${kandidat.inseratId}`);
+  return { ok: true };
+}

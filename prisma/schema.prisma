@@ -1,0 +1,73 @@
+// Prisma-Schema für TempMatch.
+// SQLite für die lokale Entwicklung – für Produktion (Vercel) auf "postgresql"
+// umstellen und DATABASE_URL auf die gehostete Datenbank zeigen lassen.
+// SQLite kennt keine Enums/Arrays: Enum-Felder sind String (mit TS-Union-Typen
+// in src/lib/types.ts), Listen werden als JSON-String gespeichert.
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Firma {
+  id            String    @id @default(cuid())
+  name          String
+  branche       String
+  ort           String
+  kontaktperson String
+  inserate      Inserat[]
+  createdAt     DateTime  @default(now())
+}
+
+model Agentur {
+  id            String     @id @default(cuid())
+  name          String
+  ort           String
+  kontaktperson String
+  aboAktiv      Boolean    @default(false)
+  kandidaten    Kandidat[]
+  createdAt     DateTime   @default(now())
+}
+
+model Inserat {
+  id                     String     @id @default(cuid())
+  firma                  Firma      @relation(fields: [firmaId], references: [id])
+  firmaId                String
+  titel                  String
+  beruf                  String
+  beschreibung           String
+  anforderungen          String     @default("[]") // JSON-Array von Strings
+  ort                    String
+  startDatum             String
+  dauer                  String
+  festanstellungMoeglich Boolean    @default(false)
+  status                 String     @default("OFFEN")
+  erstelltAm             String
+  kandidaten             Kandidat[]
+  createdAt              DateTime   @default(now())
+}
+
+model Kandidat {
+  id                   String   @id @default(cuid())
+  inserat              Inserat  @relation(fields: [inseratId], references: [id])
+  inseratId            String
+  agentur              Agentur  @relation(fields: [agenturId], references: [id])
+  agenturId            String
+  vorname              String
+  nachname             String
+  beruf                String
+  erfahrungJahre       Int
+  qualifikationen      String   @default("[]") // JSON-Array von Strings
+  verfuegbarAb         String
+  verfuegbarBis        String?
+  telefon              String?
+  email                String?
+  fruehererArbeitgeber String?
+  status               String   @default("AUSSTEHEND")
+  notiz                String
+  createdAt            DateTime @default(now())
+}

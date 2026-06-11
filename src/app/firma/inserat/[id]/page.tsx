@@ -2,16 +2,10 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { DemoBanner, Header, Footer, InseratBadge } from "@/components/ui";
 import { KandidatenListe } from "@/components/kandidaten-liste";
-import {
-  getInserat,
-  getKandidatenFuerInserat,
-  getAgentur,
-  inserate,
-} from "@/lib/demo-data";
+import { getInserat, getKandidatenFuerInserat, getAgentur } from "@/lib/db";
+import type { Agentur } from "@/lib/types";
 
-export function generateStaticParams() {
-  return inserate.map((i) => ({ id: i.id }));
-}
+export const dynamic = "force-dynamic";
 
 export default async function InseratDetail({
   params,
@@ -19,12 +13,13 @@ export default async function InseratDetail({
   params: Promise<{ id: string }>;
 }) {
   const { id } = await params;
-  const inserat = getInserat(id);
+  const inserat = await getInserat(id);
   if (!inserat) notFound();
 
-  const kandidaten = getKandidatenFuerInserat(inserat.id);
-  const agenturen = Object.fromEntries(
-    kandidaten.map((k) => [k.agenturId, getAgentur(k.agenturId)]),
+  const kandidaten = await getKandidatenFuerInserat(inserat.id);
+  const agenturIds = Array.from(new Set(kandidaten.map((k) => k.agenturId)));
+  const agenturen: Record<string, Agentur | undefined> = Object.fromEntries(
+    await Promise.all(agenturIds.map(async (aid) => [aid, await getAgentur(aid)] as const)),
   );
 
   return (
