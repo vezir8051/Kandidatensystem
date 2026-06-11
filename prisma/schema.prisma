@@ -1,15 +1,14 @@
 // Prisma-Schema für TempMatch.
-// SQLite für die lokale Entwicklung – für Produktion (Vercel) auf "postgresql"
-// umstellen und DATABASE_URL auf die gehostete Datenbank zeigen lassen.
-// SQLite kennt keine Enums/Arrays: Enum-Felder sind String (mit TS-Union-Typen
-// in src/lib/types.ts), Listen werden als JSON-String gespeichert.
+// PostgreSQL (Vercel Postgres in Produktion, lokal via DATABASE_URL).
+// Enum-Felder werden als String gespeichert (Union-Typen in src/lib/types.ts),
+// Listen als JSON-String – so bleibt das Mapping in src/lib/db.ts portabel.
 
 generator client {
   provider = "prisma-client-js"
 }
 
 datasource db {
-  provider = "sqlite"
+  provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 

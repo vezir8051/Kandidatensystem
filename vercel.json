@@ -1,6 +1,6 @@
 {
   "framework": "nextjs",
-  "buildCommand": "npm run build",
+  "buildCommand": "prisma db push --skip-generate && tsx prisma/seed.ts && next build",
   "installCommand": "npm ci",
   "env": {
     "NEXT_TELEMETRY_DISABLED": "1"

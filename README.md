@@ -12,23 +12,38 @@ einen Kandidaten ein, die Firma wählt aus.
 ## Tech-Stack
 
 - **Next.js 15** (App Router, Server Actions) + **React 18** + **TypeScript**
-- **Prisma 6** + **SQLite** (lokal) – für Produktion auf PostgreSQL umstellbar
+- **Prisma 6** + **PostgreSQL** (Vercel Postgres in Produktion)
 - **Tailwind CSS** für das Styling
 
 ## Starten
 
+Voraussetzung: eine erreichbare PostgreSQL-Datenbank. `DATABASE_URL` in einer
+`.env` setzen (z. B. lokales Postgres oder die Vercel-Postgres-URL):
+
 ```bash
+echo 'DATABASE_URL="postgresql://USER:PASS@HOST:5432/DBNAME"' > .env
+
 npm install            # erzeugt auch den Prisma-Client (postinstall)
-npm run db:push        # legt das DB-Schema in prisma/dev.db an
-npm run db:seed        # befüllt die DB mit den Ausgangsdaten
+npm run db:push        # legt das Schema in der DB an
+npm run db:seed        # befüllt die DB mit den Ausgangsdaten (idempotent)
 npm run dev            # http://localhost:3000
 
 npm run db:reset       # DB komplett zurücksetzen + neu seeden
 npm run build          # Produktions-Build
 ```
 
-Die Verbindung wird über `DATABASE_URL` in `.env` gesteuert
-(Standard: `file:./dev.db`).
+## Deployment auf Vercel
+
+1. Im Vercel-Dashboard unter **Storage → Create Database → Postgres** anlegen
+   und mit dem Projekt verbinden.
+2. Sicherstellen, dass die Env-Var **`DATABASE_URL`** im Projekt gesetzt ist
+   (auf die **direkte/Non-Pooling**-Connection-URL zeigen lassen – nötig für
+   `prisma db push`).
+3. Deploy auslösen. Der Build (`vercel.json → buildCommand`) führt automatisch
+   `prisma db push` + Seed aus und baut danach die App.
+
+Schema und Seed laufen also bei jedem Deploy automatisch; der Seed ist
+idempotent (Upserts) und überschreibt keine zur Laufzeit erstellten Daten.
 
 ## Architektur
 
@@ -58,9 +73,6 @@ Die Verbindung wird über `DATABASE_URL` in `.env` gesteuert
 
 1. **Authentifizierung** (NextAuth.js) für Firmen / Agenturen / Admin –
    ersetzt die festen Demo-Identitäten (`AKTUELLE_FIRMA_ID`, erste Agentur)
-2. **Produktions-Datenbank**: Prisma-Datasource auf `postgresql` umstellen
-   und `DATABASE_URL` auf eine gehostete DB (z. B. Vercel Postgres / Neon)
-   zeigen lassen – SQLite ist auf Vercel nicht persistent
-3. **Stripe-Abonnement** (29 CHF/Monat) für Agenturen
-4. **E-Mail-Benachrichtigungen** (Auswahl, neue Einreichungen)
-5. **Datei-Uploads** für Lebensläufe (PDF)
+2. **Stripe-Abonnement** (29 CHF/Monat) für Agenturen
+3. **E-Mail-Benachrichtigungen** (Auswahl, neue Einreichungen)
+4. **Datei-Uploads** für Lebensläufe (PDF)
