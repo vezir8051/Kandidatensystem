@@ -1,6 +1,6 @@
 {
   "framework": "nextjs",
-  "buildCommand": "prisma db push --skip-generate && tsx prisma/seed.ts && next build",
+  "buildCommand": "export DATABASE_URL=\"${DATABASE_URL:-${POSTGRES_URL_NON_POOLING:-${POSTGRES_PRISMA_URL:-${DATABASE_URL_UNPOOLED:-$POSTGRES_URL}}}}\"; prisma db push --skip-generate && tsx prisma/seed.ts && next build",
   "installCommand": "npm ci",
   "env": {
     "NEXT_TELEMETRY_DISABLED": "1"

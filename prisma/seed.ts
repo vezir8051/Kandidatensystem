@@ -10,8 +10,10 @@ import {
   inserate,
   kandidaten,
 } from "../src/lib/demo-data";
+import { resolveDatabaseUrl } from "../src/lib/prisma";
 
-const prisma = new PrismaClient();
+const url = resolveDatabaseUrl();
+const prisma = new PrismaClient(url ? { datasources: { db: { url } } } : undefined);
 
 async function main() {
   for (const f of firmen) {
