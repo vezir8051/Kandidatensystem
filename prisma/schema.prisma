@@ -73,7 +73,20 @@ model Kandidat {
   consentWahrheit      Boolean   @default(false)
   consentErreichbar    Boolean   @default(false)
   consentAm            DateTime?
+  // Lebenslauf als PDF, direkt in der DB gespeichert (bytea).
+  cvDateiname          String?
+  cvInhalt             Bytes?
+  meldungen            Meldung[]
   createdAt            DateTime  @default(now())
+}
+
+// Meldung eines Kandidaten durch eine Firma (Missbrauch/Beschwerde).
+model Meldung {
+  id         String   @id @default(cuid())
+  kandidat   Kandidat @relation(fields: [kandidatId], references: [id])
+  kandidatId String
+  grund      String
+  createdAt  DateTime @default(now())
 }
 
 // Frühbucher-/Warteliste von der Startseite (Lead-Formular).

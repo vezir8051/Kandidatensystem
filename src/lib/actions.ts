@@ -79,6 +79,8 @@ export async function kandidatEinreichen(input: {
   consentNdsg?: boolean;
   consentWahrheit?: boolean;
   consentErreichbar?: boolean;
+  cvDateiname?: string;
+  cvBase64?: string;
 }): Promise<ActionResult> {
   const vorname = input.vorname?.trim();
   const nachname = input.nachname?.trim();
@@ -89,6 +91,23 @@ export async function kandidatEinreichen(input: {
   // Pflichtbestätigungen müssen serverseitig vorliegen (nicht nur im UI).
   if (!input.consentNdsg || !input.consentWahrheit || !input.consentErreichbar) {
     return { ok: false, fehler: "Bitte alle drei Pflichtbestätigungen ankreuzen." };
+  }
+
+  // CV (optional): Base64 -> Bytes, nur PDFs bis 5 MB akzeptieren.
+  let cvInhalt: Uint8Array<ArrayBuffer> | null = null;
+  let cvDateiname: string | null = null;
+  if (input.cvBase64) {
+    try {
+      const roh = Buffer.from(input.cvBase64, "base64");
+      cvInhalt = new Uint8Array(new ArrayBuffer(roh.byteLength));
+      cvInhalt.set(roh);
+    } catch {
+      return { ok: false, fehler: "Der hochgeladene Lebenslauf konnte nicht verarbeitet werden." };
+    }
+    if (cvInhalt.length > 5 * 1024 * 1024) {
+      return { ok: false, fehler: "Der Lebenslauf ist zu gross (max. 5 MB)." };
+    }
+    cvDateiname = input.cvDateiname?.trim() || "lebenslauf.pdf";
   }
 
   const inserat = await prisma.inserat.findUnique({ where: { id: input.inseratId } });
@@ -128,6 +147,8 @@ export async function kandidatEinreichen(input: {
       consentWahrheit: true,
       consentErreichbar: true,
       consentAm: new Date(),
+      cvInhalt,
+      cvDateiname,
     },
   });
 
@@ -177,6 +198,24 @@ export async function kandidatAblehnen(kandidatId: string): Promise<ActionResult
   });
 
   revalidatePath(`/firma/inserat/${kandidat.inseratId}`);
+  return { ok: true };
+}
+
+// --- Firma: Kandidaten melden (Missbrauch/Beschwerde) ---
+
+export async function kandidatMelden(
+  kandidatId: string,
+  grund: string,
+): Promise<ActionResult> {
+  const text = grund?.trim();
+  if (!text) return { ok: false, fehler: "Bitte einen Grund angeben." };
+
+  const kandidat = await prisma.kandidat.findUnique({ where: { id: kandidatId } });
+  if (!kandidat) return { ok: false, fehler: "Kandidat nicht gefunden." };
+
+  await prisma.meldung.create({ data: { kandidatId, grund: text } });
+
+  revalidatePath("/admin");
   return { ok: true };
 }
 

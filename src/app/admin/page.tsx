@@ -5,6 +5,7 @@ import {
   getInserate,
   getKandidaten,
   getLeads,
+  getMeldungen,
   countKandidatenFuerInserat,
 } from "@/lib/db";
 
@@ -15,12 +16,13 @@ export const metadata = {
 export const dynamic = "force-dynamic";
 
 export default async function AdminDashboard() {
-  const [firmen, agenturen, inserate, kandidaten, leads] = await Promise.all([
+  const [firmen, agenturen, inserate, kandidaten, leads, meldungen] = await Promise.all([
     getFirmen(),
     getAgenturen(),
     getInserate(),
     getKandidaten(),
     getLeads(),
+    getMeldungen(),
   ]);
   const firmaName = Object.fromEntries(firmen.map((f) => [f.id, f.name]));
   const kandidatenZahlen = Object.fromEntries(
@@ -36,6 +38,7 @@ export default async function AdminDashboard() {
     { label: "Inserate (offen)", wert: offene },
     { label: "Kandidaten", wert: kandidaten.length },
     { label: "Frühbucher-Leads", wert: leads.length },
+    { label: "Meldungen", wert: meldungen.length },
   ];
 
   return (
@@ -47,7 +50,7 @@ export default async function AdminDashboard() {
         <h1 className="text-2xl font-bold text-slate-900 mb-6">Admin-Übersicht</h1>
 
         {/* Kennzahlen */}
-        <div className="grid grid-cols-2 md:grid-cols-5 gap-4 mb-10">
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 mb-10">
           {kennzahlen.map((k) => (
             <div key={k.label} className="bg-white rounded-2xl border border-slate-200 p-5 shadow-soft">
               <div className="tabular text-3xl font-bold text-ink">
@@ -148,6 +151,35 @@ export default async function AdminDashboard() {
                     <td className="px-4 py-3 text-slate-600">{l.email}</td>
                     <td className="px-4 py-3 text-slate-600">{l.rolle}</td>
                     <td className="px-4 py-3 text-slate-600">{l.erstelltAm}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        )}
+
+        {/* Gemeldete Kandidaten */}
+        <h2 className="text-lg font-semibold text-slate-900 mb-3 mt-10">Gemeldete Kandidaten</h2>
+        {meldungen.length === 0 ? (
+          <div className="bg-white rounded-2xl border border-dashed border-slate-300 p-8 text-center text-sm text-slate-500">
+            Keine Meldungen. Von Firmen gemeldete Kandidaten erscheinen hier.
+          </div>
+        ) : (
+          <div className="bg-white rounded-2xl border border-slate-100 shadow-soft overflow-hidden">
+            <table className="w-full text-sm">
+              <thead className="bg-slate-50 text-slate-500 text-left">
+                <tr>
+                  <th className="px-4 py-3 font-medium">Kandidat</th>
+                  <th className="px-4 py-3 font-medium">Grund</th>
+                  <th className="px-4 py-3 font-medium">Gemeldet am</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-slate-100">
+                {meldungen.map((m) => (
+                  <tr key={m.id} className="hover:bg-slate-50">
+                    <td className="px-4 py-3 text-slate-800">{m.kandidatName}</td>
+                    <td className="px-4 py-3 text-slate-600">{m.grund}</td>
+                    <td className="px-4 py-3 text-slate-600">{m.erstelltAm}</td>
                   </tr>
                 ))}
               </tbody>

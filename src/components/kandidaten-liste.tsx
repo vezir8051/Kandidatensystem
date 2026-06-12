@@ -3,7 +3,7 @@
 import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { KandidatBadge } from "@/components/ui";
-import { kandidatAuswaehlen, kandidatAblehnen } from "@/lib/actions";
+import { kandidatAuswaehlen, kandidatAblehnen, kandidatMelden } from "@/lib/actions";
 import type { Kandidat, KandidatStatus, Agentur } from "@/lib/demo-data";
 
 function formatDatum(iso: string): string {
@@ -65,8 +65,24 @@ export function KandidatenListe({
   }
 
   function melden(k: Kandidat) {
+    const grund = window.prompt(
+      `Warum möchten Sie ${k.vorname} ${k.nachname} melden?\n(z.B. falsche Angaben, nicht erreichbar)`,
+    );
+    if (grund === null) return; // Abbruch
+    if (!grund.trim()) {
+      setMeldung("Bitte einen Grund für die Meldung angeben.");
+      return;
+    }
     setGemeldet(k.id);
-    setMeldung(`Meldung für ${k.vorname} ${k.nachname} wurde registriert. In der Vollversion wird das Admin-Team benachrichtigt.`);
+    startUebergang(async () => {
+      const res = await kandidatMelden(k.id, grund.trim());
+      if (!res.ok) {
+        setGemeldet(null);
+        setMeldung(res.fehler);
+        return;
+      }
+      setMeldung(`Meldung für ${k.vorname} ${k.nachname} wurde an das Admin-Team übermittelt.`);
+    });
   }
 
   if (kandidaten.length === 0) {
@@ -204,16 +220,20 @@ export function KandidatenListe({
               )}
 
               <div className="mt-4 flex items-center gap-4">
-                <button
-                  onClick={() =>
-                    setMeldung(
-                      `📄 In der Vollversion öffnet sich hier der Lebenslauf von ${k.vorname} ${k.nachname} als PDF.`,
-                    )
-                  }
-                  className="inline-flex items-center gap-1 text-sm text-brand-600 hover:underline"
-                >
-                  Lebenslauf (PDF) ansehen
-                </button>
+                {k.hatCv ? (
+                  <a
+                    href={`/api/kandidat/${k.id}/cv`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-1 text-sm text-brand-600 hover:underline"
+                  >
+                    Lebenslauf (PDF) ansehen
+                  </a>
+                ) : (
+                  <span className="inline-flex items-center gap-1 text-sm text-slate-400">
+                    Kein Lebenslauf hochgeladen
+                  </span>
+                )}
                 {gemeldet !== k.id && (
                   <button
                     onClick={() => melden(k)}

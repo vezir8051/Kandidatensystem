@@ -45,6 +45,24 @@ export interface Kandidat {
   fruehererArbeitgeber?: string;
   status: KandidatStatus;
   notiz: string;
+  hatCv?: boolean;
+  cvDateiname?: string;
+}
+
+export interface Meldung {
+  id: string;
+  kandidatId: string;
+  kandidatName: string;
+  grund: string;
+  erstelltAm: string;
+}
+
+export interface Lead {
+  id: string;
+  name: string;
+  email: string;
+  rolle: string;
+  erstelltAm: string;
 }
 
 export interface Lead {
