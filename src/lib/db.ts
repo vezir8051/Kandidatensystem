@@ -12,6 +12,7 @@ import type {
   Kandidat,
   KandidatStatus,
   Lead,
+  Meldung,
 } from "@/lib/types";
 
 function parseListe(json: string): string[] {
@@ -84,6 +85,8 @@ function mapKandidat(r: NonNullable<KandidatRow>): Kandidat {
     fruehererArbeitgeber: r.fruehererArbeitgeber ?? undefined,
     status: r.status as KandidatStatus,
     notiz: r.notiz,
+    hatCv: r.cvInhalt != null,
+    cvDateiname: r.cvDateiname ?? undefined,
   };
 }
 
@@ -160,6 +163,20 @@ export async function getLeads(): Promise<Lead[]> {
     name: r.name,
     email: r.email,
     rolle: r.rolle,
+    erstelltAm: r.createdAt.toISOString().slice(0, 10),
+  }));
+}
+
+export async function getMeldungen(): Promise<Meldung[]> {
+  const rows = await prisma.meldung.findMany({
+    orderBy: { createdAt: "desc" },
+    include: { kandidat: true },
+  });
+  return rows.map((r) => ({
+    id: r.id,
+    kandidatId: r.kandidatId,
+    kandidatName: `${r.kandidat.vorname} ${r.kandidat.nachname}`,
+    grund: r.grund,
     erstelltAm: r.createdAt.toISOString().slice(0, 10),
   }));
 }

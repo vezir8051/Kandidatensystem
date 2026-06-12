@@ -23,7 +23,21 @@ export function EinreichFormular({
   const [einverstaendnis, setEinverstaendnis] = useState(false);
   const [wahrheit, setWahrheit] = useState(false);
   const [erreichbar, setErreichbar] = useState(false);
+  const [cvDatei, setCvDatei] = useState<File | null>(null);
   const [fehler, setFehler] = useState<string | null>(null);
+
+  function dateiLesen(datei: File): Promise<string> {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () => {
+        const result = reader.result as string;
+        // result ist "data:application/pdf;base64,XXXX" -> nur den Base64-Teil nehmen
+        resolve(result.split(",")[1] ?? "");
+      };
+      reader.onerror = () => reject(new Error("Datei konnte nicht gelesen werden."));
+      reader.readAsDataURL(datei);
+    });
+  }
 
   function absenden(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -39,11 +53,20 @@ export function EinreichFormular({
       setFehler("Bitte alle drei Bestätigungen ankreuzen.");
       return;
     }
+    if (cvDatei && cvDatei.type !== "application/pdf") {
+      setFehler("Der Lebenslauf muss eine PDF-Datei sein.");
+      return;
+    }
+    if (cvDatei && cvDatei.size > 5 * 1024 * 1024) {
+      setFehler("Der Lebenslauf ist zu gross (max. 5 MB).");
+      return;
+    }
     setFehler(null);
 
     const fd = new FormData(e.currentTarget);
     const erfahrungRoh = (fd.get("erfahrungJahre") as string) || "";
     startUebergang(async () => {
+      const cvBase64 = cvDatei ? await dateiLesen(cvDatei) : undefined;
       const res = await kandidatEinreichen({
         inseratId,
         vorname: vorname.trim(),
@@ -60,6 +83,8 @@ export function EinreichFormular({
         consentNdsg: einverstaendnis,
         consentWahrheit: wahrheit,
         consentErreichbar: erreichbar,
+        cvDateiname: cvDatei?.name,
+        cvBase64,
       });
       if (!res.ok) {
         setFehler(res.fehler);
@@ -209,9 +234,18 @@ export function EinreichFormular({
 
       <div>
         <label className="block text-sm font-medium text-slate-700 mb-1.5">Lebenslauf (PDF)</label>
-        <div className="border-2 border-dashed border-slate-300 rounded-lg p-6 text-center text-sm text-slate-500">
-          PDF hierher ziehen oder klicken zum Hochladen
-        </div>
+        <input
+          type="file"
+          accept="application/pdf"
+          onChange={(e) => setCvDatei(e.target.files?.[0] ?? null)}
+          className="block w-full text-sm text-slate-600 file:mr-3 file:rounded-lg file:border-0 file:bg-brand-50 file:px-4 file:py-2 file:text-sm file:font-medium file:text-brand-700 hover:file:bg-brand-100"
+        />
+        {cvDatei && (
+          <p className="text-xs text-slate-500 mt-1">
+            Ausgewählt: {cvDatei.name} ({Math.round(cvDatei.size / 1024)} KB)
+          </p>
+        )}
+        <p className="text-xs text-slate-400 mt-1">Optional · nur PDF · max. 5 MB</p>
       </div>
 
       <div className="space-y-3 border border-slate-200 rounded-lg p-4 bg-slate-50">
