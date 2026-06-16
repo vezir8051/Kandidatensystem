@@ -3,6 +3,7 @@ import { DemoBanner, Header, Footer } from "@/components/ui";
 import { LeadFormular } from "@/components/lead-formular";
 import { SuchPille } from "@/components/such-pille";
 import { Sparkle, BlobImage } from "@/components/decor";
+import { Reveal } from "@/components/reveal";
 import { BILDER } from "@/lib/bilder";
 import { getFirmen, getInserate, getKandidaten } from "@/lib/db";
 
@@ -67,7 +68,7 @@ export default async function Home() {
         <Sparkle className="absolute left-[22%] bottom-40 animate-twinkle" size={18} color="#5eead4" />
         <Sparkle className="absolute right-[24%] bottom-48 animate-twinkle" size={20} color="#3f7cff" />
 
-        <div className="relative max-w-5xl mx-auto px-4 pt-20 pb-44 text-center">
+        <div className="relative max-w-5xl mx-auto px-4 pt-20 pb-44 text-center motion-safe:animate-fade-up">
           <h1 className="font-display text-4xl md:text-6xl font-extrabold text-white leading-[1.08] text-balance">
             Inserate matchen. <span className="text-brand-300">Vermittlung verbinden.</span> Einsätze starten.
           </h1>
@@ -218,7 +219,7 @@ export default async function Home() {
           </h2>
           <p className="mt-3 text-body">Finde temporäre Talente in den gefragtesten Branchen.</p>
         </div>
-        <div className="grid grid-cols-2 md:grid-cols-3 gap-5">
+        <Reveal className="grid grid-cols-2 md:grid-cols-3 gap-5">
           {BERUFSFELDER.map((b) => (
             <Link
               key={b.name}
@@ -238,7 +239,7 @@ export default async function Home() {
               </span>
             </Link>
           ))}
-        </div>
+        </Reveal>
       </section>
 
       {/* ================= HOW-TO BOX ================= */}
@@ -314,7 +315,7 @@ export default async function Home() {
         <h2 className="text-center font-display text-3xl md:text-4xl font-extrabold text-ink mb-14">
           In wenigen Schritten zum Einsatz
         </h2>
-        <div className="grid md:grid-cols-3 gap-8">
+        <Reveal className="grid md:grid-cols-3 gap-8">
           {[
             { nr: "1", titel: "Firma inseriert", text: "Ein Unternehmen erstellt in Minuten ein Inserat mit allen Anforderungen." },
             { nr: "2", titel: "Agenturen reichen ein", text: "Vermittlungsbüros sehen das Inserat und reichen pro Stelle einen Kandidaten ein." },
@@ -328,7 +329,7 @@ export default async function Home() {
               <p className="mt-2 text-sm text-body leading-relaxed">{s.text}</p>
             </div>
           ))}
-        </div>
+        </Reveal>
       </section>
 
       {/* ================= TESTIMONIALS ================= */}
@@ -337,7 +338,7 @@ export default async function Home() {
           <h2 className="text-center font-display text-3xl md:text-4xl font-extrabold text-ink mb-14">
             Das sagen unsere Nutzer
           </h2>
-          <div className="grid md:grid-cols-3 gap-6">
+          <Reveal className="grid md:grid-cols-3 gap-6">
             {TESTIMONIALS.map((t) => (
               <div key={t.name} className="rounded-3xl bg-white p-7 shadow-soft">
                 <div className="flex text-accent-pink mb-3">{"★★★★★"}</div>
@@ -352,7 +353,7 @@ export default async function Home() {
                 </div>
               </div>
             ))}
-          </div>
+          </Reveal>
         </div>
       </section>
 

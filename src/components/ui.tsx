@@ -41,17 +41,17 @@ export function Header({
         <Logo />
         <nav className="flex items-center gap-2 text-sm">
           {rolle === "firma" && (
-            <span className="px-3 py-1.5 rounded-full bg-white/15 text-white font-medium">
+            <span className="hidden sm:inline-block px-3 py-1.5 rounded-full bg-white/15 text-white font-medium whitespace-nowrap">
               {name ? `Firma: ${name}` : "Firma"}
             </span>
           )}
           {rolle === "agentur" && (
-            <span className="px-3 py-1.5 rounded-full bg-white/15 text-white font-medium">
+            <span className="hidden sm:inline-block px-3 py-1.5 rounded-full bg-white/15 text-white font-medium whitespace-nowrap">
               {name ? `Agentur: ${name}` : "Agentur"}
             </span>
           )}
           {rolle === "admin" && (
-            <span className="px-3 py-1.5 rounded-full bg-white/15 text-white font-medium">
+            <span className="hidden sm:inline-block px-3 py-1.5 rounded-full bg-white/15 text-white font-medium whitespace-nowrap">
               Admin-Bereich
             </span>
           )}

@@ -87,9 +87,9 @@ export function KandidatenListe({
 
   if (kandidaten.length === 0) {
     return (
-      <div className="bg-white rounded-xl border border-dashed border-slate-300 p-10 text-center">
-        <p className="text-slate-600 font-medium">Noch keine Kandidaten eingereicht</p>
-        <p className="text-sm text-slate-400 mt-1">
+      <div className="bg-white rounded-2xl border border-dashed border-slate-300 p-10 text-center">
+        <p className="text-body font-medium">Noch keine Kandidaten eingereicht</p>
+        <p className="text-sm text-muted mt-1">
           Sobald Agenturen Kandidaten einreichen, erscheinen sie hier.
         </p>
       </div>
@@ -138,14 +138,18 @@ export function KandidatenListe({
               }`}
             >
               <div className="flex flex-wrap items-start justify-between gap-3">
-                <div>
+                <div className="flex items-start gap-3 min-w-0">
+                  <span className="hidden sm:flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-brand-50 font-display font-bold text-brand-600">
+                    {(k.vorname[0] ?? "") + (k.nachname[0] ?? "")}
+                  </span>
+                  <div className="min-w-0">
                   <div className="flex items-center gap-2 flex-wrap">
-                    <h3 className="font-semibold text-slate-900">
+                    <h3 className="font-semibold text-ink">
                       {k.vorname} {k.nachname}
                     </h3>
                     <KandidatBadge status={status} />
                   </div>
-                  <p className="text-sm text-slate-500 mt-0.5">
+                  <p className="text-sm text-muted mt-0.5">
                     {k.beruf} · {k.erfahrungJahre} Jahre Erfahrung · verfügbar ab{" "}
                     {formatDatum(k.verfuegbarAb)}
                   </p>
@@ -156,9 +160,10 @@ export function KandidatenListe({
                         : "Verfügbar bis: " + formatDatum(k.verfuegbarBis)}
                     </p>
                   )}
-                  <p className="text-xs text-slate-400 mt-1">
+                  <p className="text-xs text-muted mt-1">
                     Eingereicht von: {agentur?.name}
                   </p>
+                  </div>
                 </div>
                 <div className="flex gap-2 flex-wrap">
                   {status === "AUSSTEHEND" && (
@@ -166,14 +171,14 @@ export function KandidatenListe({
                       <button
                         onClick={() => auswaehlen(k)}
                         disabled={istAmSpeichern}
-                        className="px-4 py-2 rounded-lg bg-brand-600 text-white text-sm font-medium hover:bg-brand-700 transition-colors disabled:opacity-50"
+                        className="btn-cta px-5 py-2 text-sm disabled:opacity-50"
                       >
                         Auswählen
                       </button>
                       <button
                         onClick={() => ablehnen(k)}
                         disabled={istAmSpeichern}
-                        className="px-4 py-2 rounded-lg bg-slate-100 text-slate-600 text-sm font-medium hover:bg-slate-200 transition disabled:opacity-50"
+                        className="px-4 py-2 rounded-full bg-slate-100 text-slate-600 text-sm font-medium hover:bg-slate-200 transition disabled:opacity-50"
                       >
                         Ablehnen
                       </button>

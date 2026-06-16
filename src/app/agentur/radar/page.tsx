@@ -179,7 +179,7 @@ export default function RadarPage() {
         {/* Seitentitel */}
         <div className="mt-6 mb-8">
           <div className="flex items-center gap-3 flex-wrap">
-            <h1 className="text-2xl font-bold text-ink">Markt-Radar</h1>
+            <h1 className="font-display text-2xl font-extrabold text-ink">Markt-Radar</h1>
             <span className="inline-flex items-center justify-center w-7 h-7 rounded-full bg-brand-600 text-white text-xs font-bold">
               {sofortCount}
             </span>
