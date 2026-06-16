@@ -93,17 +93,19 @@ export default async function Home() {
             <SuchPille />
           </div>
 
-          {/* Schnellfilter-Pillen */}
-          <div className="mt-6 flex flex-wrap justify-center gap-2">
-            {BERUFSFELDER.slice(0, 5).map((b) => (
-              <Link
-                key={b.name}
-                href={`/agentur?beruf=${encodeURIComponent(b.name)}`}
-                className="rounded-full bg-white/10 px-4 py-1.5 text-sm text-white/90 hover:bg-white/20 transition-colors"
-              >
-                {b.name}
-              </Link>
-            ))}
+          {/* Schnellfilter-Pillen als Laufband: läuft nach rechts, hält bei Mouseover an */}
+          <div className="group mt-6 overflow-hidden [mask-image:linear-gradient(to_right,transparent,black_12%,black_88%,transparent)]">
+            <div className="flex w-max gap-2 animate-marquee group-hover:[animation-play-state:paused]">
+              {[...BERUFSFELDER, ...BERUFSFELDER].map((b, idx) => (
+                <Link
+                  key={`${b.name}-${idx}`}
+                  href={`/agentur?beruf=${encodeURIComponent(b.name)}`}
+                  className="shrink-0 rounded-full bg-white/10 px-4 py-1.5 text-sm text-white/90 hover:bg-white/20 transition-colors"
+                >
+                  {b.name}
+                </Link>
+              ))}
+            </div>
           </div>
         </div>
 

@@ -85,11 +85,17 @@ const config: Config = {
           "0%, 100%": { transform: "translateY(0)" },
           "50%": { transform: "translateY(-8px)" },
         },
+        // Laufband nach rechts (Inhalt ist verdoppelt -> nahtlose Schleife).
+        marquee: {
+          "0%": { transform: "translateX(-50%)" },
+          "100%": { transform: "translateX(0)" },
+        },
       },
       animation: {
         "fade-up": "fade-up 0.5s ease-out both",
         twinkle: "twinkle 3s ease-in-out infinite",
         float: "float 5s ease-in-out infinite",
+        marquee: "marquee 24s linear infinite",
       },
     },
   },
