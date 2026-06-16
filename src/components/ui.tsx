@@ -1,19 +1,34 @@
 import Link from "next/link";
 import type { InseratStatus, KandidatStatus } from "@/lib/demo-data";
 import { SperrenButton } from "@/components/sperren-button";
+import { Sparkle } from "@/components/decor";
 
 // --- Demo-Banner ---
 export function DemoBanner() {
   return (
-    <div className="bg-brand-600 text-white text-center text-sm py-2 px-4">
-      <span className="opacity-90">
-        Demo-Version – alle Daten sind Beispieldaten. Keine echte Anmeldung, keine Zahlungen.
-      </span>
+    <div className="bg-night-900 text-white/90 text-center text-sm py-2 px-4">
+      <span>Demo-Version – alle Daten sind Beispieldaten. Keine echte Anmeldung, keine Zahlungen.</span>
     </div>
   );
 }
 
-// --- Header / Navigation ---
+// --- Logo (weiss, mit Sternchen) ---
+export function Logo({ dark = false }: { dark?: boolean }) {
+  return (
+    <Link href="/" className="flex items-center gap-1.5">
+      <span
+        className={`font-display font-extrabold text-2xl tracking-tight ${
+          dark ? "text-ink" : "text-white"
+        }`}
+      >
+        Temp<span className={dark ? "text-brand-600" : "text-white/90"}>Match</span>
+      </span>
+      <Sparkle size={16} color={dark ? "#0d57f5" : "#ffffff"} className="-mt-3" />
+    </Link>
+  );
+}
+
+// --- Header / Navigation (blaue Jobwish-Leiste) ---
 export function Header({
   rolle,
   name,
@@ -22,37 +37,53 @@ export function Header({
   name?: string;
 }) {
   return (
-    <header className="sticky top-0 z-20 bg-white border-b border-slate-200">
-      <div className="max-w-6xl mx-auto px-4 h-20 flex items-center justify-between">
-        <Link href="/" className="flex items-center gap-2.5">
-          <span className="inline-flex items-center justify-center w-9 h-9 rounded-lg bg-brand-600 text-white font-bold text-lg">
-            T
-          </span>
-          <span className="font-bold text-xl tracking-tight text-brand-600">TempMatch</span>
-        </Link>
+    <header className="sticky top-0 z-30 bg-brand-600">
+      <div className="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between">
+        <Logo />
         <nav className="flex items-center gap-2 text-sm">
           {rolle === "firma" && (
-            <span className="px-3 py-1 rounded-full bg-brand-50 text-brand-600 font-medium">
-              {name ? `Firma: ${name}` : "Angemeldet als Firma"}
+            <span className="px-3 py-1.5 rounded-full bg-white/15 text-white font-medium">
+              {name ? `Firma: ${name}` : "Firma"}
             </span>
           )}
           {rolle === "agentur" && (
-            <span className="px-3 py-1 rounded-full bg-slate-50 text-ink font-medium border border-slate-200">
-              {name ? `Agentur: ${name}` : "Angemeldet als Agentur"}
+            <span className="px-3 py-1.5 rounded-full bg-white/15 text-white font-medium">
+              {name ? `Agentur: ${name}` : "Agentur"}
             </span>
           )}
           {rolle === "admin" && (
-            <span className="px-3 py-1 rounded-full bg-ink text-white font-medium">
+            <span className="px-3 py-1.5 rounded-full bg-white/15 text-white font-medium">
               Admin-Bereich
             </span>
           )}
-          {rolle && (
+          {rolle ? (
             <Link
               href="/"
-              className="px-3 py-1.5 rounded-lg text-body hover:bg-slate-50 transition-colors"
+              className="btn-pill border-white/60 text-white px-4 py-1.5 hover:bg-white/10"
             >
               Abmelden
             </Link>
+          ) : (
+            <>
+              <Link
+                href="/agentur"
+                className="btn-pill border-white/60 text-white px-4 py-1.5 hover:bg-white/10 hidden sm:inline-flex"
+              >
+                Offene Inserate
+              </Link>
+              <Link
+                href="/firma"
+                className="btn-pill border-white/60 text-white px-4 py-1.5 hover:bg-white/10 hidden sm:inline-flex"
+              >
+                Für Firmen
+              </Link>
+              <Link
+                href="/login"
+                className="btn-pill border-white bg-white text-brand-700 px-4 py-1.5 hover:bg-white/90"
+              >
+                Anmelden
+              </Link>
+            </>
           )}
         </nav>
       </div>
