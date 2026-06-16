@@ -51,14 +51,14 @@ export function InseratErstellenButton() {
     <>
       <button
         onClick={() => setOffen(true)}
-        className="px-5 py-2.5 rounded-lg bg-brand-600 text-white font-medium hover:bg-brand-700 transition"
+        className="btn-cta px-5 py-2.5 text-sm"
       >
         + Neues Inserat erstellen
       </button>
 
       {offen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 px-4">
-          <div className="bg-white rounded-2xl w-full max-w-lg p-6 shadow-xl">
+        <div className="fixed inset-0 z-50 flex items-start sm:items-center justify-center bg-black/40 p-4 overflow-y-auto">
+          <div className="bg-white rounded-2xl w-full max-w-lg p-6 shadow-xl my-auto max-h-[90vh] overflow-y-auto">
             {fertig ? (
               <div className="text-center py-4">
                 <div className="w-14 h-14 rounded-full bg-emerald-100 flex items-center justify-center mx-auto">
