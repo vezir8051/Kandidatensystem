@@ -1,6 +1,5 @@
 import Link from "next/link";
 import type { InseratStatus, KandidatStatus } from "@/lib/demo-data";
-import { SperrenButton } from "@/components/sperren-button";
 import { Sparkle } from "@/components/decor";
 
 // --- Demo-Banner ---
@@ -153,7 +152,6 @@ export function Footer() {
           <Link href="/impressum" className="hover:text-brand-600 transition">
             Impressum
           </Link>
-          <SperrenButton />
         </nav>
       </div>
     </footer>
