@@ -160,6 +160,11 @@ export function KandidatenListe({
                         : "Verfügbar bis: " + formatDatum(k.verfuegbarBis)}
                     </p>
                   )}
+                  {k.fruehererArbeitgeber && (
+                    <p className="text-xs text-muted mt-1">
+                      Früherer Arbeitgeber: {k.fruehererArbeitgeber}
+                    </p>
+                  )}
                   <p className="text-xs text-muted mt-1">
                     Eingereicht von: {agentur?.name}
                   </p>
