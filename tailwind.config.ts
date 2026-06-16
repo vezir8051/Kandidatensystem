@@ -9,24 +9,24 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        // Primärfarbe: kräftiges Jobwish-Blau (Header, Links, Standard-CTA).
+        // Primärfarbe: Jobwish Royal-Blue (Header, Links, Standard-CTA).
         brand: {
-          50: "#eaf1ff",
-          100: "#d4e2ff",
-          200: "#aac6ff",
-          300: "#75a3ff",
-          400: "#3f7cff",
-          500: "#1a63ff",
-          600: "#0d57f5", // Primär
-          700: "#0a45c7",
-          800: "#0c3aa1",
-          900: "#0e3380",
+          50: "#eef4ff",
+          100: "#dbe7fe",
+          200: "#bdd3fd",
+          300: "#90b5fb",
+          400: "#5b8df7",
+          500: "#3b82f6", // helle Akzentfläche (z.B. Promo-Karte)
+          600: "#2d6fd4", // Primär (Header, Buttons)
+          700: "#1d4ed8",
+          800: "#1e40af",
+          900: "#0a225a", // dunkles Navy (Footer, Headings)
         },
-        // Akzent: Pink→Lila-Verlauf der Highlight-CTAs ("Jetzt bewerben" etc.).
+        // Akzent: Lila→Pink-Verlauf der Highlight-CTAs ("Jetzt bewerben" etc.).
         accent: {
-          pink: "#ec3f8f",
-          fuchsia: "#d23bb4",
-          purple: "#9c3cf0",
+          purple: "#9333ea", // purple-600
+          fuchsia: "#c026d3",
+          pink: "#db2777", // pink-600
           violet: "#7c3aed",
         },
         // Dunkler Hero-Hintergrund (Sternenfeld).
@@ -49,7 +49,7 @@ const config: Config = {
           800: "#1c2440",
           900: "#131a33",
         },
-        ink: "#131a33",
+        ink: "#0a225a",
         body: "#3f4c68",
         muted: "#5f6e8c",
         hairline: "#dde5f0",
@@ -57,8 +57,8 @@ const config: Config = {
       },
       fontFamily: {
         sans: ["var(--font-inter)", "ui-sans-serif", "system-ui", "sans-serif"],
-        // Runde, fette Display-Schrift für Überschriften (Jobwish-Look).
-        display: ["var(--font-poppins)", "var(--font-inter)", "system-ui", "sans-serif"],
+        // Display-Schrift für Überschriften (Jobwish-Look: Jost).
+        display: ["var(--font-jost)", "var(--font-inter)", "system-ui", "sans-serif"],
       },
       boxShadow: {
         soft: "0 1px 2px rgba(19,26,51,0.04), 0 8px 24px rgba(19,26,51,0.06)",
@@ -67,7 +67,8 @@ const config: Config = {
         cta: "0 10px 30px rgba(236,63,143,0.35)",
       },
       backgroundImage: {
-        "cta-gradient": "linear-gradient(90deg, #ec3f8f 0%, #9c3cf0 100%)",
+        // Lila → Pink (purple-600 → pink-600), wie die Jobwish-Highlight-CTAs.
+        "cta-gradient": "linear-gradient(90deg, #9333ea 0%, #db2777 100%)",
         "night-gradient":
           "radial-gradient(1200px 600px at 50% -10%, #2a1f72 0%, #111a4a 45%, #0a1336 100%)",
       },

@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Inter, Poppins } from "next/font/google";
+import { Inter, Jost } from "next/font/google";
 import "./globals.css";
 
 const inter = Inter({
@@ -8,10 +8,11 @@ const inter = Inter({
   display: "swap",
 });
 
-const poppins = Poppins({
+// Jobwish verwendet Jost als Display-Schrift (geometrisch, rund).
+const jost = Jost({
   subsets: ["latin"],
-  weight: ["500", "600", "700", "800"],
-  variable: "--font-poppins",
+  weight: ["400", "500", "600", "700"],
+  variable: "--font-jost",
   display: "swap",
 });
 
@@ -27,7 +28,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="de" className={`${inter.variable} ${poppins.variable}`}>
+    <html lang="de" className={`${inter.variable} ${jost.variable}`}>
       <body className="min-h-screen font-sans antialiased">{children}</body>
     </html>
   );
