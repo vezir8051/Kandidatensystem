@@ -262,8 +262,9 @@ export default async function Home() {
       {/* ================= HOW-TO BOX ================= */}
       <section className="max-w-6xl mx-auto px-4">
         <div className="rounded-3xl bg-brand-50 px-6 py-12 text-center">
-          <h2 className="font-display text-2xl md:text-3xl font-extrabold text-ink">
-            💡 So funktioniert TempMatch – richtig vermitteln
+          <h2 className="font-display text-2xl md:text-3xl font-extrabold text-ink flex items-center justify-center gap-2">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-brand-600 shrink-0"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.8.8 1.3 1.5 1.5 2.5" /><path d="M9 18h6" /><path d="M10 22h4" /></svg>
+            So funktioniert TempMatch – richtig vermitteln
           </h2>
           <p className="mx-auto mt-4 max-w-2xl text-body">
             Firmen inserieren ihren Personalbedarf in wenigen Minuten. Vermittlungsbüros reichen
@@ -317,11 +318,13 @@ export default async function Home() {
         </div>
         <div className="order-1 md:order-2 relative">
           <BlobImage src={BILDER.frauHandy} alt="Vermittlerin am Smartphone" shape="blob-2" backdrop="bg-accent-purple/40" className="h-80" />
-          <div className="absolute top-6 -left-3 rounded-full bg-white px-4 py-2 text-sm font-medium text-ink shadow-card">
-            📄 {offene.length} offene Inserate
+          <div className="absolute top-6 -left-3 flex items-center gap-1.5 rounded-full bg-white px-4 py-2 text-sm font-medium text-ink shadow-card">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-brand-600 shrink-0"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" /><polyline points="14 2 14 8 20 8" /></svg>
+            {offene.length} offene Inserate
           </div>
-          <div className="absolute -bottom-3 right-6 rounded-full bg-brand-600 px-4 py-2 text-sm font-medium text-white shadow-card">
-            ♥ Passender Match
+          <div className="absolute -bottom-3 right-6 flex items-center gap-1.5 rounded-full bg-brand-600 px-4 py-2 text-sm font-medium text-white shadow-card">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" className="shrink-0" aria-hidden="true"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 1 0-7.78 7.78L12 21.23l8.84-8.84a5.5 5.5 0 0 0 0-7.78z" /></svg>
+            Passender Match
           </div>
           <Sparkle className="absolute bottom-12 -left-2" size={18} color="#5eead4" />
         </div>
@@ -358,11 +361,16 @@ export default async function Home() {
           <Reveal className="grid md:grid-cols-3 gap-6">
             {TESTIMONIALS.map((t) => (
               <div key={t.name} className="rounded-3xl bg-white p-7 shadow-soft">
-                <div className="flex text-accent-pink mb-3">{"★★★★★"}</div>
+                <div className="flex gap-0.5 text-accent-pink mb-3" aria-label="5 von 5 Sternen">
+                  {Array.from({ length: 5 }).map((_, i) => (
+                    <svg key={i} width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2l2.9 6.26L21.6 9.27l-4.8 4.68 1.13 6.6L12 17.4l-5.93 3.15L7.2 13.95 2.4 9.27l6.7-1.01z" /></svg>
+                  ))}
+                </div>
                 <p className="text-body leading-relaxed">„{t.text}"</p>
                 <div className="mt-5 flex items-center gap-3">
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src={t.bild} alt={t.name} loading="lazy" className="h-12 w-12 rounded-full object-cover bg-slate-200" />
+                  <span className="inline-flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-brand-50 font-display font-bold text-brand-600">
+                    {t.name.split(" ").map((w) => w[0]).slice(0, 2).join("")}
+                  </span>
                   <div className="text-sm">
                     <p className="font-semibold text-ink">{t.name}</p>
                     <p className="text-muted">{t.rolle}</p>
