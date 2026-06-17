@@ -155,25 +155,34 @@ export default async function Home() {
 
         {/* Top Firmen */}
         <div className="overflow-hidden rounded-3xl bg-white shadow-card">
-          <div className="bg-brand-600 px-6 py-4 text-center">
+          <div className="bg-gradient-to-r from-brand-700 to-brand-500 px-6 py-4">
             <h3 className="font-display text-lg font-bold text-white">Top Firmen</h3>
           </div>
-          <div className="p-5 space-y-4">
+          <div className="p-4 space-y-3">
             {topFirmen.map((f) => (
-              <div key={f.id} className="rounded-2xl border border-slate-100 p-4">
-                <p className="font-semibold text-ink">{f.name}</p>
-                <div className="mt-2 flex items-center gap-3">
-                  <span className="inline-flex h-11 w-11 items-center justify-center rounded-full bg-brand-50 font-display font-bold text-brand-600">
-                    {f.name.slice(0, 2).toUpperCase()}
-                  </span>
-                  <div className="text-sm">
-                    <p className="font-medium text-body">{f.branche}</p>
-                    <p className="text-muted">📍 {f.ort}</p>
-                  </div>
+              <div
+                key={f.id}
+                className="flex items-center gap-3 rounded-2xl bg-slate-50 p-3 ring-1 ring-transparent transition hover:bg-white hover:shadow-soft hover:ring-slate-100"
+              >
+                <span className="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-brand-50 font-display font-bold text-brand-600">
+                  {f.name.slice(0, 2).toUpperCase()}
+                </span>
+                <div className="min-w-0">
+                  <p className="truncate text-sm font-semibold text-ink">{f.name}</p>
+                  <p className="mt-0.5 flex items-center gap-2 text-xs text-muted">
+                    <span>{f.branche}</span>
+                    <span className="flex items-center gap-1">
+                      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="shrink-0"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" /><circle cx="12" cy="10" r="3" /></svg>
+                      {f.ort}
+                    </span>
+                  </p>
                 </div>
               </div>
             ))}
-            <Link href="/agentur" className="block text-center text-sm font-medium text-brand-600 hover:underline">
+            <Link
+              href="/agentur"
+              className="block pt-1 text-center text-sm font-semibold text-brand-600 hover:underline"
+            >
               Alle Firmen ansehen →
             </Link>
           </div>
@@ -181,30 +190,38 @@ export default async function Home() {
 
         {/* Inserate im Spotlight */}
         <div className="overflow-hidden rounded-3xl bg-white shadow-card">
-          <div className="bg-brand-600 px-6 py-4 text-center">
+          <div className="bg-gradient-to-r from-accent-purple to-accent-pink px-6 py-4">
             <h3 className="font-display text-lg font-bold text-white">Inserate im Spotlight</h3>
           </div>
-          <div className="p-5 space-y-4">
+          <div className="p-4 space-y-3">
             {spotlight.length === 0 && (
               <p className="text-sm text-muted text-center py-6">Aktuell keine offenen Inserate.</p>
             )}
             {spotlight.map((i) => (
-              <div key={i.id} className="rounded-2xl border border-slate-100 p-4">
-                <p className="font-semibold text-ink leading-snug">{i.titel}</p>
-                <span className="mt-1 inline-block rounded-md bg-brand-50 px-2 py-0.5 text-xs font-medium text-brand-700">
-                  {i.dauer}
-                </span>
-                <p className="mt-2 text-sm text-muted">
-                  {firmaName[i.firmaId]} · 📍 {i.ort}
-                </p>
-                <div className="mt-3 flex gap-2">
-                  <Link
-                    href={`/agentur/inserat/${i.id}`}
-                    className="btn-cta px-4 py-2 text-xs"
-                  >
-                    Kandidat einreichen
-                  </Link>
+              <div
+                key={i.id}
+                className="rounded-2xl bg-slate-50 p-3 ring-1 ring-transparent transition hover:bg-white hover:shadow-soft hover:ring-slate-100"
+              >
+                <div className="flex items-start justify-between gap-2">
+                  <p className="text-sm font-semibold text-ink leading-snug">{i.titel}</p>
+                  <span className="shrink-0 rounded-full bg-green-100 px-2 py-0.5 text-[11px] font-semibold text-green-800">
+                    {i.dauer}
+                  </span>
                 </div>
+                <p className="mt-1 flex items-center gap-1 text-xs text-muted">
+                  {firmaName[i.firmaId]}
+                  <span className="flex items-center gap-1">
+                    ·
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="shrink-0"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" /><circle cx="12" cy="10" r="3" /></svg>
+                    {i.ort}
+                  </span>
+                </p>
+                <Link
+                  href={`/agentur/inserat/${i.id}`}
+                  className="btn-cta mt-2 inline-block px-4 py-1.5 text-xs"
+                >
+                  Kandidat einreichen
+                </Link>
               </div>
             ))}
           </div>
