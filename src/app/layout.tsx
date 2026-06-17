@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Inter, Jost } from "next/font/google";
 import "./globals.css";
+import { ScrollTop } from "@/components/scroll-top";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -62,7 +63,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="de" className={`${inter.variable} ${jost.variable}`}>
-      <body className="min-h-screen font-sans antialiased">{children}</body>
+      <body className="min-h-screen font-sans antialiased">
+        {children}
+        <ScrollTop />
+      </body>
     </html>
   );
 }

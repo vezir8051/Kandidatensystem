@@ -11,6 +11,24 @@ html {
   scroll-behavior: smooth;
 }
 
+/* Sanftes Einblenden des Inhalts beim Aufklappen der FAQ-Akkordeons */
+@media (prefers-reduced-motion: no-preference) {
+  details[open] > *:not(summary) {
+    animation: faq-reveal 0.25s ease-out;
+  }
+}
+
+@keyframes faq-reveal {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 body {
   color: rgb(var(--foreground));
   background: rgb(var(--background));
