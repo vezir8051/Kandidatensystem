@@ -1,6 +1,7 @@
 import Link from "next/link";
 import type { InseratStatus, KandidatStatus } from "@/lib/demo-data";
 import { Sparkle } from "@/components/decor";
+import { MobileMenu } from "@/components/mobile-menu";
 
 // --- Demo-Banner ---
 export function DemoBanner() {
@@ -36,22 +37,22 @@ export function Header({
   name?: string;
 }) {
   return (
-    <header className="sticky top-0 z-30 bg-brand-600">
+    <header className="sticky top-0 z-30 bg-brand-600 relative">
       <div className="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between">
         <Logo />
-        <nav className="flex items-center gap-2 text-sm">
+        <nav className="hidden sm:flex items-center gap-2 text-sm">
           {rolle === "firma" && (
-            <span className="hidden sm:inline-block px-3 py-1.5 rounded-full bg-white/15 text-white font-medium whitespace-nowrap">
+            <span className="inline-block px-3 py-1.5 rounded-full bg-white/15 text-white font-medium whitespace-nowrap">
               {name ? `Firma: ${name}` : "Firma"}
             </span>
           )}
           {rolle === "agentur" && (
-            <span className="hidden sm:inline-block px-3 py-1.5 rounded-full bg-white/15 text-white font-medium whitespace-nowrap">
+            <span className="inline-block px-3 py-1.5 rounded-full bg-white/15 text-white font-medium whitespace-nowrap">
               {name ? `Agentur: ${name}` : "Agentur"}
             </span>
           )}
           {rolle === "admin" && (
-            <span className="hidden sm:inline-block px-3 py-1.5 rounded-full bg-white/15 text-white font-medium whitespace-nowrap">
+            <span className="inline-block px-3 py-1.5 rounded-full bg-white/15 text-white font-medium whitespace-nowrap">
               Admin-Bereich
             </span>
           )}
@@ -66,13 +67,13 @@ export function Header({
             <>
               <Link
                 href="/agentur"
-                className="btn-pill border-white/60 text-white px-4 py-1.5 hover:bg-white/10 hidden sm:inline-flex"
+                className="btn-pill border-white/60 text-white px-4 py-1.5 hover:bg-white/10"
               >
                 Offene Inserate
               </Link>
               <Link
                 href="/firma"
-                className="btn-pill border-white/60 text-white px-4 py-1.5 hover:bg-white/10 hidden sm:inline-flex"
+                className="btn-pill border-white/60 text-white px-4 py-1.5 hover:bg-white/10"
               >
                 Für Firmen
               </Link>
@@ -85,6 +86,7 @@ export function Header({
             </>
           )}
         </nav>
+        <MobileMenu rolle={rolle} name={name} />
       </div>
     </header>
   );
