@@ -2,7 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { Inter, Jost } from "next/font/google";
 import "./globals.css";
 import { ScrollTop } from "@/components/scroll-top";
-import { Agentation } from "agentation";
+import { AgentationGate } from "@/components/agentation-gate";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -67,7 +67,7 @@ export default function RootLayout({
       <body className="min-h-screen font-sans antialiased">
         {children}
         <ScrollTop />
-        {process.env.NODE_ENV === "development" && <Agentation />}
+        <AgentationGate />
       </body>
     </html>
   );
