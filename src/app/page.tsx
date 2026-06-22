@@ -146,9 +146,9 @@ export default async function Home() {
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src={BILDER.frauHandy}
-            alt="Person am Smartphone"
+            alt=""
             loading="lazy"
-            className="mt-4 ml-auto h-40 w-32 object-cover blob-2"
+            className="mt-4 ml-auto h-40 w-32 object-cover blob-2 bg-white/10"
           />
           <Sparkle className="absolute bottom-6 left-6" size={20} color="#5eead4" />
         </div>
@@ -246,7 +246,7 @@ export default async function Home() {
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src={b.bild}
-                alt={b.name}
+                alt=""
                 loading="lazy"
                 className="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
               />

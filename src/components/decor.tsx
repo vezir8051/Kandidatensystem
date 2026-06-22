@@ -51,7 +51,7 @@ export function BlobImage({
         src={src}
         alt={alt}
         loading="lazy"
-        className={`relative ${shape} w-full h-full object-cover shadow-card`}
+        className={`relative ${shape} w-full h-full object-cover shadow-card bg-brand-100`}
       />
     </div>
   );
